@@ -20,9 +20,9 @@ gem 'jbuilder', '~> 1.2'
 
 group :development, :test do
 	gem 'sqlite3'
-	gem 'rspec-rails',
+	gem 'rspec-rails'
 	gem 'shoulda-matchers'						# cleaner, simpler tests with great validation testing
-	gem 'guard-rspec',
+	gem 'guard-rspec'
 	gem 'spork-rails', '4.0.0'
 	gem 'guard-spork', '1.5.0'
 	gem 'childprocess', '0.3.6'
