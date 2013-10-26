@@ -24,15 +24,30 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    @user = User.new(user_params)
+    
+    first_name, last_name, email, password = *params.values_at(:first_name, :last_name, :email, :password)
 
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @user }
+    if [first_name, last_name, email, password].any?(&:blank?)
+      return render_success({status:"error", message: 'invalid create parameters'})
+    end
+
+    #school already exists
+    if User.exists?(email: email.downcase)
+      return render_success({status:"error", message:"user already exists"})
+    end
+
+    #create school
+    School.transaction do
+      user = School.new(
+        name: (first_name + " " last_name).titleize,
+        email: email.downcase,
+        password: password
+      )
+
+      if user.save
+        render_success({status:"success", message:"created"})
       else
-        format.html { render action: 'new' }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        render_success({status:"error", message:"user creation failed"})
       end
     end
   end
