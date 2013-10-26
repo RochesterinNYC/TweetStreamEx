@@ -67,4 +67,24 @@ TweetStreamUser.validate = (fields) ->
       error_list_el.show()
   error_free
 
+TweetStreamUser.register = () ->
+  formData = {
+    'first_name': $('#id_contact_first_name').val(),
+    'last_name': $('#id_contact_last_name').val(),
+    'email': $('#id_account_email').val(),
+    'password': $('#id_password').val(),
+  }
+
+  url = document.location.protocol + "//" + document.location.host + "/users/create"
+  params = { url: url, data: formData, type: 'POST', timeout: 5000, error: TweetStreamUser.validateError, statusCode: { 401: TweetStreamUser.validateError, 406: TweetStreamUser.validateError, 200: TweetStreamUser.validateSuccess }}
+  # params.dataType = 'jsonp' if JSONP # use JSONP for development
+  $.ajax(params)
+
+TweetStreamUser.validateError = () ->
+  TweetStreamUser.showError()
   
+TweetStreamUser.validateSuccess = (data) ->
+  if data.status is 'success'
+    document.location.href = document.location.protocol + "//" + document.location.host + '/users/create?success=1'
+  else if (data.status is 'error')
+    TweetStreamUser.showError()

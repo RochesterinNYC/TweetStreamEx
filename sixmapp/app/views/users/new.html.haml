@@ -1,5 +1,10 @@
 %h1 New user
 
-= render 'form'
+= if @success
+  .user-message#user-message-success
+    %ul
+      %li.messages.user-success
+        %p
+          Thanks for your request! We'll get back to you as soon as possible.
 
-= link_to 'Back', users_path
+= render 'form'
