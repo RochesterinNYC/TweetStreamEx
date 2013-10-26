@@ -31,14 +31,14 @@ class UsersController < ApplicationController
       return render_success({status:"error", message: 'invalid create parameters'})
     end
 
-    #school already exists
+    #User already exists
     if User.exists?(email: email.downcase)
       return render_success({status:"error", message:"user already exists"})
     end
 
-    #create school
-    School.transaction do
-      user = School.new(
+    #create user
+    User.transaction do
+      user = User.new(
         name: (first_name + " " last_name).titleize,
         email: email.downcase,
         password: password
