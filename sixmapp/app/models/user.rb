@@ -1,10 +1,9 @@
 class User < ActiveRecord::Base
-	attr_accessor :name, :email, :password
   VALID_TYPES = %w{ REGULAR PREMIUM UNCONFIRMED } 
 
   validates :email, presence: true, uniqueness: true
   validates :name, presence: true
-  validates :password, presence: true
+  #validates :password_digest, presence: true
   validates_format_of :email, :with => /\A([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})\z/
   validates_inclusion_of :user_type, in: VALID_TYPES  
 

@@ -24,7 +24,6 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    
     first_name, last_name, email, password = *params.values_at(:first_name, :last_name, :email, :password)
 
     if [first_name, last_name, email, password].any?(&:blank?)
@@ -35,16 +34,14 @@ class UsersController < ApplicationController
     if User.exists?(email: email.downcase)
       return render_success({status:"error", message:"user already exists"})
     end
-
     #create user
     User.transaction do
-      user = User.new(
+      @user = User.new(
         name: (first_name + " " + last_name).titleize,
         email: email.downcase,
-        password: password
+        password_digest: "test"
       )
-
-      if user.save
+      if @user.save!
         render_success({status:"success", message:"created"})
       else
         render_success({status:"error", message:"user creation failed"})
@@ -84,6 +81,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation)
+      params.require(:user).permit(:name, :email, :password)
     end
 end
