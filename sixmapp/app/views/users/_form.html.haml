@@ -1,21 +1,40 @@
-= form_for @user do |f|
-  - if @user.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@user.errors.count, "error")} prohibited this user from being saved:"
-      %ul.classname#idname
-        - @user.errors.full_messages.each do |msg|
-          %li= msg
-  .field
-    = f.label :name
-    = f.text_field :name
-  .field
-    = f.label :email
-    = f.text_field :email
-  .field
-    = f.label :password
-    = f.text_field :password
-  .field
-    = f.label :password_confirmation
-    = f.text_field :password_confirmation
-  .actions
-    = f.submit 'Save'
+%form
+  %input#first_name.required_field{ type: "text", placeholder: "First Name" }
+  %ul.errorlist#first_name_errorlist{ style: "display:none;" }
+    %li 
+      Did you enter your first name?
+  %br
+  %input#last_name.required_field{ type: "text", placeholder: "Last Name" }
+  %ul.errorlist#last_name_errorlist{ style: "display:none;" }
+    %li 
+      Did you enter your last name?
+  %br
+  %input#email.required_field{ type: "text", placeholder: "Email Address" }
+    %ul.errorlist#email_errorlist{ style: "display:none;" }
+    %li 
+      Did you enter a correct email address?
+    %ul.errorlist#user_exists_errorlist{ style: "display:none;" }
+    %li 
+      There is already an account created with this email address.
+  %br
+  %input#password.required_field{ type: "password", placeholder: "Password" }
+  %ul.errorlist#password_errorlist{ style: "display:none;" }
+    %li 
+      Did you enter a password with at least 8 characters, 1 number, and 1 symbol?
+  %br
+  %input#password_confirmation.required_field{ type: "password", placeholder: "Password Confirmation" }
+  %ul.errorlist#password_confirmation_errorlist{ style: "display:none;" }
+    %li 
+      Does your password confirmation match your password?
+  %br
+  %input{ type: "button", value: "submit"}
+    %ul.errorlist#form_errorlist{ style: "display:none;" }
+    %li 
+      Please fix the above form issues before proceeding and submitting.
+:javascript
+  $(document).ready(function(){
+    function formSubmit(){
+      TweetStreamUser.submit();
+    }
+    $('form input[type="button"].active').live('click', formSubmit);
+  });
