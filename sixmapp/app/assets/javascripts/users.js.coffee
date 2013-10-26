@@ -5,7 +5,6 @@ $ = jQuery
 window.TweetStreamUser ||= {}
 
 TweetStreamUser.submit = () ->
-  alert("test")
   for el in $('.required_field')
     el = $(el)
     el.css({border: '1px solid #b4b4b4'})
@@ -20,21 +19,33 @@ TweetStreamUser.submit = () ->
     TweetStreamUser.showError()
 
 TweetStreamUser.showError = () ->
-  $('#user-messages-success').hide()
-  $('#user-messages-error').show()
+  $('#user-message-success').hide()
+  $('#user-message-error').show()
 
 TweetStreamUser.hideError = () ->
   $('.errorlist').hide()
-  $('#user-messages-error').hide()
-  $('#user-messages-success').show()
+  $('#user-message-error').hide()
+  $('#user-message-success').show()
 
 TweetStreamUser.sufficientPassword = () ->
   $('#password_errorlist').hide()
   if $('#password').val().length < 8
-    $('#id_password_errorlist').show()
+    $('#password_errorlist').show()
     false
   else
     true
+
+TweetStreamUser.checkAccountEmail = (email) ->
+  error_free = true
+  if email is ''
+    error_free = false
+    $('#email').css({border: '1px solid #c94435'})
+    $('#email_errorlist').show()
+  else if !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$/i.test($.trim(email))
+    error_free = false    
+    $('#email').css({border: '1px solid #c94435'})
+    $('#email_errorlist').show()
+  error_free
 
 TweetStreamUser.validate = (fields) ->
   fields = $('input.required_field') unless fields

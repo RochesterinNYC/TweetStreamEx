@@ -8,17 +8,17 @@
   %input#first_name.required_field{ type: "text", placeholder: "First Name" }
   %ul.errorlist#first_name_errorlist{ style: "display:none;" }
     %li 
-      Did you enter your first name?
+      Please enter your first name.
   %br
   %input#last_name.required_field{ type: "text", placeholder: "Last Name" }
   %ul.errorlist#last_name_errorlist{ style: "display:none;" }
     %li 
-      Did you enter your last name?
+      Please enter your last name.
   %br
   %input#email.required_field{ type: "text", placeholder: "Email Address" }
   %ul.errorlist#email_errorlist{ style: "display:none;" }
     %li 
-      Did you enter a correct email address?
+      Please enter a correct email address.
   %ul.errorlist#user_exists_errorlist{ style: "display:none;" }
     %li 
       There is already an account created with this email address.
@@ -26,12 +26,12 @@
   %input#password.required_field{ type: "password", placeholder: "Password" }
   %ul.errorlist#password_errorlist{ style: "display:none;" }
     %li 
-      Did you enter a password with at least 8 characters, 1 number, and 1 symbol?
+      Please enter a password with at least 8 characters, 1 number, and 1 symbol?
   %br
   %input#password_confirmation.required_field{ type: "password", placeholder: "Password Confirmation" }
   %ul.errorlist#password_confirmation_errorlist{ style: "display:none;" }
     %li 
-      Does your password confirmation match your password?
+      Please ensure your password confirmation matches your password.
   %br
   %input#submit{ type: "button", value: "submit"}
   %ul.errorlist#form_errorlist{ style: "display:none;" }
