@@ -5,6 +5,7 @@ $ = jQuery
 window.TweetStreamUser ||= {}
 
 TweetStreamUser.submit = () ->
+  alert("test")
   for el in $('.required_field')
     el = $(el)
     el.css({border: '1px solid #b4b4b4'})
@@ -18,7 +19,7 @@ TweetStreamUser.submit = () ->
   else
     TweetStreamUser.showError()
 
-TweetStreamUser.showError()
+TweetStreamUser.showError = () ->
   $('#user-messages-success').hide()
   $('#user-messages-error').show()
 
@@ -29,7 +30,7 @@ TweetStreamUser.hideError = () ->
 
 TweetStreamUser.sufficientPassword = () ->
   $('#password_errorlist').hide()
-  if $('#password').val().length < 8 || 
+  if $('#password').val().length < 8
     $('#id_password_errorlist').show()
     false
   else
