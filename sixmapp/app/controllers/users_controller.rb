@@ -39,7 +39,7 @@ class UsersController < ApplicationController
     #create user
     User.transaction do
       user = User.new(
-        name: (first_name + " " last_name).titleize,
+        name: (first_name + " " + last_name).titleize,
         email: email.downcase,
         password: password
       )

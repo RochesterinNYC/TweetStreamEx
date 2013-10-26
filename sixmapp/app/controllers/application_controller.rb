@@ -2,4 +2,25 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
+  
+  def render_success_plain(body)
+    render json: body, status: 200, callback: params[:callback]
+  end
+
+  def render_success(body)
+    render json: body.to_json, status: 200, callback: params[:callback]
+  end
+
+  def render_unauthorized(body)
+    render json: body.to_json, status: 401, callback: params[:callback]
+  end
+
+  def render_bad_request(body)
+    render json: body.to_json, status: 406, callback: params[:callback]
+  end
+
+  def render_failure(body)
+    render json: body.to_json, status: 412, callback: params[:callback]
+  end
+
 end
