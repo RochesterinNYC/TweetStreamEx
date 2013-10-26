@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
   end
   
   def deliver_confirmation_email
-    TweetStreamUserMailer.confirmation_email(self).deliver if self.unconfirmed?
+    UserMailer.confirmation_email(self).deliver if self.unconfirmed?
   end
 end
 
