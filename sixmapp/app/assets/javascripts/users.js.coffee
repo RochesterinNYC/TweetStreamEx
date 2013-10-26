@@ -12,7 +12,8 @@ TweetStreamUser.submit = () ->
   $('#form_errors').html('')
   valid = TweetStreamUser.validate()
   sufficient_password = TweetStreamUser.sufficientPassword()
-  if valid && sufficient_password
+  password_match = TweetStreamUser.passwordMatch()
+  if valid && sufficient_password && password_match
     TweetStreamUser.hideError()
     TweetStreamUser.register()
   else
@@ -31,18 +32,24 @@ TweetStreamUser.sufficientPassword = () ->
   $('#password_errorlist').hide()
   if $('#password').val().length < 8
     $('#password_errorlist').show()
+    $('#password').css({border: '1px solid #c94435'})
     false
   else
     true
+
+TweetStreamUser.passwordMatch = () ->
+  $('#password_confirmation_errorlist').hide()
+  passwordMatch = true
+  if $('#password').val() != $('#password_confirmation').val()
+    passwordMatch = false
+    $('#password_confirmation_errorlist').show()
+    $('#password_confirmation').css({border: '1px solid #c94435'})
+  passwordMatch
 
 TweetStreamUser.checkAccountEmail = (email) ->
   error_free = true
   if email is ''
     error_free = false
-    $('#email').css({border: '1px solid #c94435'})
-    $('#email_errorlist').show()
-  else if !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$/i.test($.trim(email))
-    error_free = false    
     $('#email').css({border: '1px solid #c94435'})
     $('#email_errorlist').show()
   error_free
@@ -59,3 +66,5 @@ TweetStreamUser.validate = (fields) ->
       el.css({border: '1px solid #c94435'})
       error_list_el.show()
   error_free
+
+  
