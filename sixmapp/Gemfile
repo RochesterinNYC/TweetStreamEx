@@ -18,6 +18,8 @@ gem 'turbolinks'										# Turbolinks makes following links in your web applica
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 
+gem 'sendgrid'
+
 group :development, :test do
 	gem 'sqlite3'
 	gem 'rspec-rails'

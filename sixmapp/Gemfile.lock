@@ -192,6 +192,8 @@ GEM
       multi_json (~> 1.0)
       rubyzip (< 1.0.0)
       websocket (~> 1.0.4)
+    sendgrid (1.2.0)
+      json
     shoulda-matchers (2.4.0)
       activesupport (>= 3.0.0)
     slop (3.4.6)
@@ -266,6 +268,7 @@ DEPENDENCIES
   sass-rails (~> 4.0.0)
   sdoc
   selenium-webdriver (= 2.35.1)
+  sendgrid
   shoulda-matchers
   spork-rails (= 4.0.0)
   sqlite3
