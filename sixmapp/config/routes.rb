@@ -1,4 +1,8 @@
 Sixmapp::Application.routes.draw do
+
+
+  get "stream/index"
+
   post 'users/create' => 'users#create'
   get 'users/new' => 'users#new'
   get 'users/confirm' => 'users#confirm'  

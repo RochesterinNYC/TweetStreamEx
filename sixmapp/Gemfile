@@ -2,6 +2,11 @@ source 'https://rubygems.org'
 
 gem 'rails', '4.0.0'								# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 
+
+# JEFFREY'S GEMS
+gem 'tweetstream', '2.5.0'
+# END JEFFREY'S GEMS
+
 gem 'twitter-bootstrap-rails'
 gem 'haml'
 gem 'haml-rails'										# haml templates for rails

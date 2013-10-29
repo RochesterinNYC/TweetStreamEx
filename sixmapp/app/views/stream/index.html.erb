@@ -1,0 +1,25 @@
+<meta http-equiv="refresh" content="7" >
+<h1>Tweets About ...</h1>
+<%= form_tag("/stream/index", :method => "get") do %> 
+  <div>
+    <%= label_tag(:q, "term0:") %>
+    <%= text_field_tag(:term0) %>
+    <%= label_tag(:q, "term1:") %>
+    <%= text_field_tag(:term1) %>
+  </div>
+  <div>
+    <%= label_tag(:q, "nterm0:") %>
+    <%= text_field_tag(:nterm0) %>
+    <%= label_tag(:q, "nterm1:") %>
+    <%= text_field_tag(:nterm1) %>
+  </div>
+  <div>
+    <%= submit_tag("Search") %>
+  </div>
+
+<% end %>
+<% @tweets.reverse.each do |tweet| %>
+  <p><%= tweet %></p>
+  <p>------------------------------------</p> 
+<% end %>
+<br />
