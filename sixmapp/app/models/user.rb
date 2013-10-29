@@ -6,7 +6,8 @@ class User < ActiveRecord::Base
   validates :password_digest, presence: true
   validates_format_of :email, :with => /\A([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})\z/
   validates_inclusion_of :user_type, in: VALID_TYPES  
-
+  has_secure_password
+  
   after_create :deliver_confirmation_email
 
   VALID_TYPES.each do |user_type|
