@@ -1,5 +1,4 @@
 class ResetController < ApplicationController
-  before_action :set_user, only: [:actual]
   
   #reset request form
   def new
@@ -15,12 +14,13 @@ class ResetController < ApplicationController
   #pass word reset form
   def password
     if params[:success] != "1"
-      @user = User.find(params[:id])
+      @id_hash = params[:id]
     end
   end
 
   #actually resets password
   def actual
+    @user = User.find(Rails.configuration.encryptor.decrypt_and_verify(params[:id]))
     if @user.reset_password(params[:password])
       return render_success({status:"success", message:"password reset"})
     else
@@ -29,10 +29,6 @@ class ResetController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
-    end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params

@@ -14,6 +14,8 @@ Bundler.require(:default, Rails.env)
 module Sixmapp
   class Application < Rails::Application
     config.admin_email = 'TweetStream! <jamesrrwen@gmail.com>'
+    config.salt = Digest::SHA1.hexdigest("TweetStream")
+    config.encryptor = ActiveSupport::MessageEncryptor.new(Rails.configuration.salt)
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

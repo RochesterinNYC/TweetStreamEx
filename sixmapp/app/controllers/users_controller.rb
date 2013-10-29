@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :confirm]
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # GET /users
   # GET /users.json
@@ -51,6 +51,7 @@ class UsersController < ApplicationController
   end
   
   def confirm
+    @user = User.find(Rails.configuration.encryptor.decrypt_and_verify(params[:id]))
     if @user.confirm_user
       redirect_to "/confirm_successful"
     else
