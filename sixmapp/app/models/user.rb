@@ -22,6 +22,13 @@ class User < ActiveRecord::Base
   def deliver_confirmation_email
     UserMailer.confirmation_email(self).deliver if self.unconfirmed?
   end
+  def confirm_user 
+    if self.unconfirmed?
+      self.regular!
+    else
+      false
+    end
+  end
 end
 
 

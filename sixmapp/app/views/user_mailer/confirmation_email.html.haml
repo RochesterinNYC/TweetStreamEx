@@ -1,1 +1,4 @@
 %html
+  %p
+    Click on this link to verify your account!
+  = link_to ("http://" + Rails.configuration.host_url + "/users/confirm?id=" + @user.id.to_s), ("http://" +Rails.configuration.host_url + "/users/confirm?id=" + @user.id.to_s)

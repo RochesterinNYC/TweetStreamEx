@@ -1,7 +1,9 @@
 Sixmapp::Application.routes.draw do
   post 'users/create' => 'users#create'
   get 'users/new' => 'users#new'
-  
+  get 'users/confirm' => 'users#confirm'  
+  get '/confirm_successful', to: redirect('/confsucc.html')
+  get '/confirm_failed', to: redirect('/conffail.html')
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

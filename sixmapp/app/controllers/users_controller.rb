@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :confirm]
 
   # GET /users
   # GET /users.json
@@ -46,6 +46,14 @@ class UsersController < ApplicationController
       else
         render_success({status:"error", message:"user creation failed"})
       end
+    end
+  end
+  
+  def confirm
+    if @user.confirm_user
+      redirect_to "/confirm_successful"
+    else
+      redirect_to "/confirm_failed"
     end
   end
 
