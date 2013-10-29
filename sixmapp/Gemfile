@@ -18,7 +18,7 @@ gem 'turbolinks'										# Turbolinks makes following links in your web applica
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 
-gem 'sendgrid'
+gem 'mailcatcher'
 
 group :development, :test do
 	gem 'sqlite3'
@@ -31,7 +31,6 @@ group :development, :test do
   gem 'pry-rails'
   gem 'pry-remote'
   gem 'pry-debugger'
-  gem 'letter_opener'
 end
 
 group :test do
