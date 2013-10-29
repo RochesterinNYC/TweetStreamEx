@@ -39,7 +39,7 @@ class UsersController < ApplicationController
       @user = User.new(
         name: (first_name + " " + last_name).titleize,
         email: email.downcase,
-        password_digest: "test"
+        password_digest: password
       )
       if @user.save!
         render_success({status:"success", message:"created"})

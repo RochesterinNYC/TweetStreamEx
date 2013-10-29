@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 20131029155002) do
     t.string   "password_digest"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "user_type",       default: "REGULAR"
+    t.string   "user_type",       default: "UNCONFIRMED"
   end
 
 end

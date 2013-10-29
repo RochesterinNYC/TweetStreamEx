@@ -1,4 +1,4 @@
-%h1 Forgot Password Page
+%h1.text-center Forgot Password Page
 .user-message#user-message-error{ style: "display:none;" }
   %ul
     %li.messages.user-error
@@ -10,8 +10,9 @@
       %li.messages.user-success
         %p
           A password reset email has been sent to your email address.
-%form
-  %input#email.required_field{ type: "text", placeholder: "Email Address" }
+%form.container.text-center
+  %br
+  %input#email.required_field.text-center{ type: "text", placeholder: "Email Address" }
   %ul.errorlist#email_errorlist{ style: "display:none;" }
     %li 
       Please enter your email.
@@ -19,7 +20,7 @@
     %li 
       No account with that email address exists.
   %br
-  %input#submit{ type: "button", value: "submit"}
+  %input#submit.text-center.btn.btn-primary{ type: "button", value: "submit"}
 :javascript
   $(document).ready(function(){
     function formSubmit(){

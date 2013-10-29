@@ -21,7 +21,6 @@ class ResetController < ApplicationController
 
   #actually resets password
   def actual
-    binding.pry
     if @user.reset_password(params[:password])
       return render_success({status:"success", message:"password reset"})
     else
