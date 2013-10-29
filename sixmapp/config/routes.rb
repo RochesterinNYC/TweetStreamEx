@@ -4,6 +4,16 @@ Sixmapp::Application.routes.draw do
   get 'users/confirm' => 'users#confirm'  
   get '/confirm_successful', to: redirect('/confsucc.html')
   get '/confirm_failed', to: redirect('/conffail.html')
+  
+  #reset request form
+  get 'reset/' => 'reset#new'
+  #generates reset link and sends email out
+  post 'reset/generate' => 'reset#generate'
+  #pass word reset form
+  get 'reset/password' => 'reset#password'
+  #actually resets password
+  post 'reset/password' => 'reset#actual'
+  get '/reset_successful', to: redirect('/resetsuccess.html')
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

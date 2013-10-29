@@ -1,0 +1,29 @@
+%h1 Forgot Password Page
+.user-message#user-message-error{ style: "display:none;" }
+  %ul
+    %li.messages.user-error
+      %p
+        Please review your form for issues and re-submit.
+= if params[:success]
+  .user-message#user-message-success
+    %ul
+      %li.messages.user-success
+        %p
+          A password reset email has been sent to your email address.
+%form
+  %input#email.required_field{ type: "text", placeholder: "Email Address" }
+  %ul.errorlist#email_errorlist{ style: "display:none;" }
+    %li 
+      Please enter your email.
+  %ul.errorlist#email_exists_errorlist{ style: "display:none;" }
+    %li 
+      No account with that email address exists.
+  %br
+  %input#submit{ type: "button", value: "submit"}
+:javascript
+  $(document).ready(function(){
+    function formSubmit(){
+      TweetStreamPasswordReset.submit();
+    }
+    $('input#submit').on('click', formSubmit);
+  });

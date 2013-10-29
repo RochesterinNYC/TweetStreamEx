@@ -46,7 +46,7 @@ TweetStreamUser.passwordMatch = () ->
     $('#password_confirmation').css({border: '1px solid #c94435'})
   passwordMatch
 
-TweetStreamUser.checkAccountEmail = (email) ->
+TweetStreamUser.checkEmail = (email) ->
   error_free = true
   if email is ''
     error_free = false
@@ -57,7 +57,7 @@ TweetStreamUser.checkAccountEmail = (email) ->
 TweetStreamUser.validate = (fields) ->
   fields = $('input.required_field') unless fields
   error_free = true
-  error_free = TweetStreamUser.checkAccountEmail($('#email').attr('value'))
+  error_free = TweetStreamUser.checkEmail($('#email').attr('value'))
   for el in fields
     el = $(el)
     if ($.trim(el.val()).length is 0) or (el.attr('data_default_value') and $.trim(el.val()) is el.attr('data_default_value')) or (el.attr('value') == '')
@@ -76,7 +76,6 @@ TweetStreamUser.register = () ->
   }
   url = document.location.protocol + "//" + document.location.host + "/users/create"
   params = { url: url, data: formData, type: 'POST', timeout: 5000, error: TweetStreamUser.validateError, statusCode: { 401: TweetStreamUser.validateError, 406: TweetStreamUser.validateError, 200: TweetStreamUser.validateSuccess }}
-  alert(params)
   # params.dataType = 'jsonp' if JSONP # use JSONP for development
   $.ajax(params)
 

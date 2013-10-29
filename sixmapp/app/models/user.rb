@@ -29,6 +29,11 @@ class User < ActiveRecord::Base
       false
     end
   end
+
+  def reset_password(password)
+    self.password_digest = password
+    self.save!
+  end
 end
 
 
