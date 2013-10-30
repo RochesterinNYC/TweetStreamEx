@@ -35,6 +35,11 @@ class User < ActiveRecord::Base
     self.password_digest = password
     self.save!
   end
+
+  def update_attr(params)
+    self.name = params[:user][:name]
+    self.save
+  end
 end
 
 

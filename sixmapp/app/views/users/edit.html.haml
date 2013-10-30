@@ -1,7 +1,31 @@
-%h1 Editing user
+%h1 Edit User
 
-= render 'form'
+= if params[:success]
+  %h2
+    Your account was successfully updated!
+= if params[:failure]
+  %h2
+    An error occurred. Your account was not updated.
 
-= link_to 'Show', @user
-\|
-= link_to 'Back', users_path
+%form.container.text-center{ action: "update", method: "post" }
+  %input{:type=>"hidden", :name =>"authenticity_token", :value=>form_authenticity_token.to_s}
+  %label
+    User Email: 
+    = @user.email
+  %label
+    Account Confirmed:
+    - if @user.unconfirmed?
+      No
+    - else
+      Yes
+  %label
+    Account Type:
+    = @user.user_type.capitalize
+  %label
+    Name:
+    %input#first_name{ type: "text", name: "user[name]", value: @user.name }
+  .actions
+    %input{ name: "commit", type: "submit", value: "Update" }
+
+%br
+%br

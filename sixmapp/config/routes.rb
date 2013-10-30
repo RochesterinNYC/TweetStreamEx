@@ -1,13 +1,13 @@
 Sixmapp::Application.routes.draw do
-
-
   get "/dashboard" => 'stream#index', :as => 'dashboard'
 
   post 'users/create' => 'users#create'
   get 'users/confirm' => 'users#confirm'  
   get '/confirm_successful', to: redirect('/confsucc.html')
   get '/confirm_failed', to: redirect('/conffail.html')
-  
+  get '/users/edit' => 'users#edit'
+  post '/users/update' => 'users#update' 
+
   #reset request form
   get '/reset/forgot' => 'reset#new', :as => 'forgot_password' 
   #generates reset link and sends email out
