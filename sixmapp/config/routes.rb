@@ -1,7 +1,7 @@
 Sixmapp::Application.routes.draw do
 
 
-  get "stream/index"
+  get "/dashboard" => 'stream#index', :as => 'dashboard'
 
   post 'users/create' => 'users#create'
   get 'users/confirm' => 'users#confirm'  

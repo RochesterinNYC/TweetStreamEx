@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   before_filter :require_user
 
   def current_user
-    #@current_user ||= User.find(session[:user_id]) if session[:user_id]
+    @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
   helper_method :current_user
   
@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
     if current_user
       return true
     end
-    redirect_to root_url
+    redirect_to login_path
         flash[:notice] = "Please login or sign up."
   end
 
