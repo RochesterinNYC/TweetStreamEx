@@ -68,7 +68,7 @@ TweetStreamUser.validate = (fields) ->
   error_free
 
 TweetStreamUser.register = () ->
-  formData = { 
+  formData = {
     'first_name': $('#first_name').val(),
     'last_name': $('#last_name').val(),
     'email': $('#email').val(),
@@ -81,9 +81,9 @@ TweetStreamUser.register = () ->
 
 TweetStreamUser.validateError = (data) ->
   TweetStreamUser.showError()
-  
+
 TweetStreamUser.validateSuccess = (data) ->
   if data.status is 'success'
-    document.location.href = document.location.protocol + "//" + document.location.host + '/users/new?success=1'
+    document.location.href = document.location.protocol + "//" + document.location.host + '/signup?success=1'
   else if (data.status is 'error')
     TweetStreamUser.showError()

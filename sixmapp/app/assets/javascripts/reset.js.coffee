@@ -48,7 +48,7 @@ TweetStreamPasswordReset.validate = (fields) ->
   error_free
 
 TweetStreamPasswordReset.submit = () ->
-  formData = { 
+  formData = {
     'email': $('#email').val(),
   }
   url = document.location.protocol + "//" + document.location.host + "/reset/generate"
@@ -58,10 +58,10 @@ TweetStreamPasswordReset.submit = () ->
 
 TweetStreamPasswordReset.validateError = (data) ->
   TweetStreamPasswordReset.showError()
-  
+
 TweetStreamPasswordReset.validateSuccess = (data) ->
   if data.status is 'success'
-    document.location.href = document.location.protocol + "//" + document.location.host + '/reset?success=1'
+    document.location.href = document.location.protocol + "//" + document.location.host + '/reset/forgot?success=1'
   else if (data.status is 'error')
     TweetStreamPasswordReset.showError()
 
@@ -79,7 +79,7 @@ TweetStreamPasswordReset.resetPassword = () ->
     TweetStreamPasswordReset.showError()
 
 TweetStreamPasswordReset.submitReset = () ->
-  formData = { 
+  formData = {
     'id': $('#id').val(),
     'password': $('#password').val()
   }
@@ -90,6 +90,6 @@ TweetStreamPasswordReset.submitReset = () ->
 
 TweetStreamPasswordReset.validatePasswordReset = (data) ->
   if data.status is 'success'
-    document.location.href = document.location.protocol + "//" + document.location.host + '/reset/password?success=1'
+    document.location.href = document.location.protocol + "//" + document.location.host + '/reset/successful'
   else if (data.status is 'error')
     TweetStreamPasswordReset.showError()

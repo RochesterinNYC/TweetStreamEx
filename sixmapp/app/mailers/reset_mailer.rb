@@ -4,6 +4,7 @@ class ResetMailer < ActionMailer::Base
   def reset_password_email(user)
     @user = user
     @encrypt_hash = Rails.configuration.encryptor.encrypt_and_sign(@user.id)
+    binding.pry
     subject = "TweetStream Reset Password Link for #{user.name}"
     mail(to: @user.email, subject: subject)
   end

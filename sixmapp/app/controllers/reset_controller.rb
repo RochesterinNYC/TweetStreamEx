@@ -1,5 +1,5 @@
 class ResetController < ApplicationController
-  
+  skip_before_filter :require_user, :only => [:new, :generate, :password, :change_password]
   #reset request form
   def new
   end
@@ -19,7 +19,7 @@ class ResetController < ApplicationController
   end
 
   #actually resets password
-  def actual
+  def change_password
     @user = User.find(Rails.configuration.encryptor.decrypt_and_verify(params[:id]))
     if @user.reset_password(params[:password])
       return render_success({status:"success", message:"password reset"})
@@ -29,7 +29,6 @@ class ResetController < ApplicationController
   end
 
   private
-
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
       params.require(:user).permit(:name, :email, :password)

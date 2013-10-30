@@ -4,20 +4,25 @@ Sixmapp::Application.routes.draw do
   get "stream/index"
 
   post 'users/create' => 'users#create'
-  get 'users/new' => 'users#new'
   get 'users/confirm' => 'users#confirm'  
   get '/confirm_successful', to: redirect('/confsucc.html')
   get '/confirm_failed', to: redirect('/conffail.html')
   
   #reset request form
-  get 'reset/' => 'reset#new'
+  get '/reset/forgot' => 'reset#new', :as => 'forgot_password' 
   #generates reset link and sends email out
-  post 'reset/generate' => 'reset#generate'
+  post '/reset/generate' => 'reset#generate', :as => 'generate'
   #pass word reset form
-  get 'reset/password' => 'reset#password'
+  get '/reset' => 'reset#password', :as => 'reset'
   #actually resets password
-  post 'reset/password' => 'reset#actual'
-  get '/reset_successful', to: redirect('/resetsuccess.html')
+  post '/reset/password' => 'reset#change_password', :as => 'reset_password'
+  get '/reset/successful', to: redirect('/resetsuccess.html')
+
+  get '/signup', to: 'users#new', :as => "signup"
+  get '/login', to: 'sessions#new', :as => "login"
+  post '/verify' => 'sessions#create', :as => 'verify'
+  post '/logout' => 'sessions#destroy', :as => 'logout'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
