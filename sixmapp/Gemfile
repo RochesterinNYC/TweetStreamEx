@@ -5,6 +5,7 @@ gem 'rails', '4.0.0'								# Bundle edge Rails instead: gem 'rails', github: 'r
 
 # JEFFREY'S GEMS
 gem 'tweetstream', '2.5.0'
+gem 'puma'
 # END JEFFREY'S GEMS
 
 gem 'twitter-bootstrap-rails'

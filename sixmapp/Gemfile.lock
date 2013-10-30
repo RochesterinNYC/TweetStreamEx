@@ -164,6 +164,8 @@ GEM
     pry-remote (0.1.7)
       pry (~> 0.9)
       slop (~> 3.0)
+    puma (2.6.0)
+      rack (>= 1.1, < 2.0)
     rack (1.5.2)
     rack-protection (1.5.1)
       rack
@@ -317,6 +319,7 @@ DEPENDENCIES
   pry-debugger
   pry-rails
   pry-remote
+  puma
   rails (= 4.0.0)
   rails_12factor (= 0.0.2)
   redcarpet
