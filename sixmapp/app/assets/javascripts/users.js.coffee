@@ -48,7 +48,7 @@ TweetStreamUser.passwordMatch = () ->
 
 TweetStreamUser.checkEmail = (email) ->
   error_free = true
-  if email is ''
+  if email is '' or !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$/i.test($.trim(email))
     error_free = false
     $('#email').css({border: '1px solid #c94435'})
     $('#email_errorlist').show()
@@ -57,10 +57,10 @@ TweetStreamUser.checkEmail = (email) ->
 TweetStreamUser.validate = (fields) ->
   fields = $('input.required_field') unless fields
   error_free = true
-  error_free = TweetStreamUser.checkEmail($('#email').attr('value'))
+  error_free = TweetStreamUser.checkEmail($('#email').val())
   for el in fields
     el = $(el)
-    if ($.trim(el.val()).length is 0) or (el.attr('data_default_value') and $.trim(el.val()) is el.attr('data_default_value')) or (el.attr('value') == '')
+    if ($.trim(el.val()).length is 0) or (el.attr('data_default_value') and $.trim(el.val()) is el.attr('data_default_value')) or (el.val() == '')
       error_free = false
       error_list_el = $('#'+el.attr('id')+'_errorlist')
       el.css({border: '1px solid #c94435'})

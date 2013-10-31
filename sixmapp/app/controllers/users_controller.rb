@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   skip_before_filter :require_user, :only => [:new, :create, :confirm]
   before_action :set_user, only: [:show, :destroy]
-  before_action :set_secure_user, only: [:edit, :update]
+  before_action :set_secure_user, only: [:edit, :update, :resend]
 
   def index
     @users = User.all
@@ -49,12 +49,17 @@ class UsersController < ApplicationController
   def confirm
     @user = User.find(Rails.configuration.encryptor.decrypt_and_verify(params[:id]))
     if @user.confirm_user
-      redirect_to "/confirm_successful"
+      redirect_to "/users/edit?confirm=1"
     else
-      redirect_to "/confirm_failed"
+      redirect_to "/users/edit?confirm_fail=1"
     end
   end
-
+ 
+  def resend
+    UserMailer.confirmation_email(@user).deliver
+    redirect_to :controller => 'users', :action => 'edit', :sent => 1 
+  end
+  
   def update
     if @user.update_attr(params)
       redirect_to "/users/edit?success=1" 

@@ -90,6 +90,6 @@ TweetStreamPasswordReset.submitReset = () ->
 
 TweetStreamPasswordReset.validatePasswordReset = (data) ->
   if data.status is 'success'
-    document.location.href = document.location.protocol + "//" + document.location.host + '/reset/successful'
+    document.location.href = document.location.protocol + "//" + document.location.host + '/login?reset=1'
   else if (data.status is 'error')
     TweetStreamPasswordReset.showError()

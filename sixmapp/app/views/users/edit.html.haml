@@ -6,7 +6,16 @@
 = if params[:failure]
   %h2
     An error occurred. Your account was not updated.
-
+= if params[:confirm]
+  %h2
+    Your account was successfully confirmed!
+= if params[:confirm_failure]
+  %h2
+    Your account was not confirmed!
+  = button_to "Resend Confirmation", users_resend_path, :method => :post
+= if params[:sent]
+  %h2
+    The confirmation email was sent again. 
 %form.container.text-center{ action: "update", method: "post" }
   %input{:type=>"hidden", :name =>"authenticity_token", :value=>form_authenticity_token.to_s}
   %label

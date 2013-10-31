@@ -3,11 +3,10 @@ Sixmapp::Application.routes.draw do
 
   post 'users/create' => 'users#create'
   get 'users/confirm' => 'users#confirm'  
-  get '/confirm_successful', to: redirect('/confsucc.html')
-  get '/confirm_failed', to: redirect('/conffail.html')
   get '/users/edit' => 'users#edit'
   post '/users/update' => 'users#update' 
-
+  post '/users/resend' => 'users#resend' 
+  
   #reset request form
   get '/reset/forgot' => 'reset#new', :as => 'forgot_password' 
   #generates reset link and sends email out
@@ -16,7 +15,6 @@ Sixmapp::Application.routes.draw do
   get '/reset' => 'reset#password', :as => 'reset'
   #actually resets password
   post '/reset/password' => 'reset#change_password', :as => 'reset_password'
-  get '/reset/successful', to: redirect('/resetsuccess.html')
 
   get '/signup', to: 'users#new', :as => "signup"
   get '/login', to: 'sessions#new', :as => "login"
