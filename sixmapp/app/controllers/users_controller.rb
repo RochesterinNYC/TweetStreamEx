@@ -49,9 +49,9 @@ class UsersController < ApplicationController
   def confirm
     @user = User.find(Rails.configuration.encryptor.decrypt_and_verify(params[:id]))
     if @user.confirm_user
-      redirect_to "/users/edit?confirm=1"
+      redirect_to "/login?confirm=1&email=#{@user.email}"
     else
-      redirect_to "/users/edit?confirm_fail=1"
+      redirect_to "/login?confirm_fail=1&email=#{@user.email}"
     end
   end
  

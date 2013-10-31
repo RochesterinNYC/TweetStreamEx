@@ -1,0 +1,211 @@
+diff --git a/sixmapp/app/assets/javascripts/stream.js.coffee b/sixmapp/app/assets/javascripts/stream.js.coffee
+index 24f83d1..5de7a1b 100644
+--- a/sixmapp/app/assets/javascripts/stream.js.coffee
++++ b/sixmapp/app/assets/javascripts/stream.js.coffee
+@@ -1,3 +1,65 @@
+-# Place all the behaviors and hooks related to the matching controller here.
+-# All this logic will automatically be available in application.js.
+-# You can use CoffeeScript in this file: http://coffeescript.org/
++# Use local alias
++$ = jQuery
++
++# Namespacing
++window.TweetStreaming ||= {}
++
++tweetArray = [];
++
++TweetStreaming.submit = () ->
++  term0 = $('input#term0').val()
++  term1 = $('input#term1').val()
++  nterm0 = $('input#nterm0').val()
++  nterm1 = $('input#nterm1').val()
++  TweetStreaming.stream(term0, term1, nterm0, nterm1)
++
++TweetStreaming.stream = (term0, term1, nterm0, nterm1) ->
++  tweetQuery = {
++    'term0': $('#term0').val(),
++    'term1': $('#term1').val(),
++    'nterm0': $('#nterm0').val(),
++    'nterm1': $('#nterm1').val()
++  }
++  url = document.location.protocol + "//" + document.location.host + "/stream/start"
++  params = { url: url, data: tweetQuery, type: 'POST', timeout: 5000, error: TweetStreaming.validateError, statusCode: { 401: TweetStreaming.validateError, 406: TweetStreaming.validateError, 200: TweetStreaming.validateSuccess }}
++  # params.dataType = 'jsonp' if JSONP # use JSONP for development
++  $.ajax(params)  
++
++TweetStreaming.validateError = (data) ->
++  TweetStreamUser.showError()
++
++TweetStreaming.validateSuccess = (data) ->
++  TweetStreaming.startStream()
++
++TweetStreaming.startStream = () ->
++  setInterval(TweetStreaming.updateTweets(),1500);
++
++TweetStreaming.updateTweets = () ->
++  tweetQuery = {
++    'term0': $('#term0').val(),
++    'term1': $('#term1').val(),
++    'nterm0': $('#nterm0').val(),
++    'nterm1': $('#nterm1').val()
++  }
++  url = document.location.protocol + "//" + document.location.host + "/stream/start"
++  params = { url: url, data: tweetQuery, type: 'POST', timeout: 5000, error: TweetStreaming.validateError, statusCode: { 401: TweetStreaming.validateError, 406: TweetStreaming.validateError, 200: TweetStreaming.validateSuccess }}
++  # params.dataType = 'jsonp' if JSONP # use JSONP for development
++  $.ajax(params)
++  
++TweetStreaming.renderTweets = () ->
++  $('.tweet').removeClass('tweet_shown')
++  $('.tweet').addClass('tweet_hidden')
++  index = 0
++  for tweet in tweetArray
++    TweetStreaming.renderTweet(index)
++    index++
++
++TweetStreaming.renderTweet = (index)
++  queryTweet = tweetArray[index];
++  $('a.tweet#tweet-' + index).href = queryTweet[:link]
++  $('img#tweet-img-' + index).src = queryTweet[:img_url]
++  $('#tweet-name-' + index).text = queryTweet[:name]
++  $('#tweet-username-' + index).text = queryTweet[:username]
++  $('#tweet-created-at-' + index).text = queryTweet[:created_at]
++  $('#tweet-text-' + index).text = queryTweet[:text]
++  $('a.tweet#tweet-' + index).addClass('tweet_shown')
+\ No newline at end of file
+diff --git a/sixmapp/app/assets/stylesheets/stream.css.scss b/sixmapp/app/assets/stylesheets/stream.css.scss
+index 03ef808..f5131ca 100644
+--- a/sixmapp/app/assets/stylesheets/stream.css.scss
++++ b/sixmapp/app/assets/stylesheets/stream.css.scss
+@@ -1,3 +1,8 @@
+-// Place all the styles related to the stream controller here.
+-// They will automatically be included in application.css.
+-// You can use Sass (SCSS) here: http://sass-lang.com/
++.tweet{
++  &.tweet_hidden{
++    display:none;
++  }
++  &.tweet_shown{
++    display:block;
++  }
++}
+diff --git a/sixmapp/app/assets/stylesheets/users.css.scss b/sixmapp/app/assets/stylesheets/users.css.scss
+index 410a161..6f6882a 100644
+--- a/sixmapp/app/assets/stylesheets/users.css.scss
++++ b/sixmapp/app/assets/stylesheets/users.css.scss
+@@ -21,7 +21,7 @@ ul {
+     font-size: 1.5em;
+   }
+   .button-area {
+-    .header_button {
++    .header-button {
+       display:block;
+       float:right;
+       padding: 5px;
+diff --git a/sixmapp/app/views/layouts/_header.html.haml b/sixmapp/app/views/layouts/_header.html.haml
+index 8ff8cac..c1f62d6 100644
+--- a/sixmapp/app/views/layouts/_header.html.haml
++++ b/sixmapp/app/views/layouts/_header.html.haml
+@@ -3,10 +3,10 @@
+     TweetStream
+   .container.button-area
+     - if current_user
+-      = link_to "Logout", logout_path, :method => :post, class: "btn header_button"
+-      = link_to "Edit Profile", users_edit_path, :method => :get, class: "btn header_button"
++      = link_to "Logout", logout_path, :method => :post, class: "btn header-button"
++      = link_to "Edit Profile", users_edit_path, :method => :get, class: "btn header-button"
+     - else
+-      = link_to "Sign Up", signup_path, :method => :get, class: "btn header_button"
+-      = link_to "Sign In", login_path, :method => :get, class: "btn header_button"
++      = link_to "Sign Up", signup_path, :method => :get, class: "btn header-button"
++      = link_to "Sign In", login_path, :method => :get, class: "btn header-button"
+ 
+        
+diff --git a/sixmapp/app/views/stream/index.html.erb b/sixmapp/app/views/stream/index.html.erb
+deleted file mode 100644
+index 6a16143..0000000
+--- a/sixmapp/app/views/stream/index.html.erb
++++ /dev/null
+@@ -1,25 +0,0 @@
+-<meta http-equiv="refresh" content="7" >
+-<h1>Tweets About ...</h1>
+-<%= form_tag("/stream/index", :method => "get") do %> 
+-  <div>
+-    <%= label_tag(:q, "term0:") %>
+-    <%= text_field_tag(:term0) %>
+-    <%= label_tag(:q, "term1:") %>
+-    <%= text_field_tag(:term1) %>
+-  </div>
+-  <div>
+-    <%= label_tag(:q, "nterm0:") %>
+-    <%= text_field_tag(:nterm0) %>
+-    <%= label_tag(:q, "nterm1:") %>
+-    <%= text_field_tag(:nterm1) %>
+-  </div>
+-  <div>
+-    <%= submit_tag("Search") %>
+-  </div>
+-
+-<% end %>
+-<% @tweets.reverse.each do |tweet| %>
+-  <p><%= tweet %></p>
+-  <p>------------------------------------</p> 
+-<% end %>
+-<br />
+diff --git a/sixmapp/app/views/stream/index.html.haml b/sixmapp/app/views/stream/index.html.haml
+new file mode 100644
+index 0000000..399a84e
+--- /dev/null
++++ b/sixmapp/app/views/stream/index.html.haml
+@@ -0,0 +1,36 @@
++-#%meta{ :"http-equiv" => "refresh", content: "7" }
++%h1
++  Tweets About...
++%form.container.text-center  
++  %div
++    %label{ for: "q"}
++      term0:
++    %input#term0{ type: "text", name: "term0" }
++  
++    %label{ for: "q"}
++      term1:
++    %input#term1{ type: "text", name: "term1" }
++
++    %label{ for: "q"}
++      nterm0:
++    %input#nterm0{ type: "text", name: "nterm0" }
++
++    %label{ for: "q"}
++      nterm1:
++    %input#nterm1{ type: "text", name: "nterm1" }
++    %br  
++    %input#stream.btn.btn-primary{ type: "button", value: "Stream" }
++:javascript  
++  $(document.ready(function(){
++    function startStream(){
++      TweetStreaming.stream()
++    }
++    $('input#stream').on('click', startStream);
++  });
++  - (0..9).each do |i|
++    %a.tweet.tweet_hidden{ href: "", target: "_blank", id: "tweet-#{i}"}
++    %img{ src: "", height: "48", width: "48", alt:"", id: "tweet-img-#{i}"}
++    %span.tweet-name{ id: "tweet-name-{i}" }
++    %span.tweet-username{ id: "tweet-username-{i}" }
++    %span.tweet-created-at{ id: "tweet-created-at-{i}" }
++    %span.tweet-text{ id: "tweet-text-{i}" }
+\ No newline at end of file
+diff --git a/sixmapp/config/application.rb b/sixmapp/config/application.rb
+index 8f7efe5..7c32b52 100644
+--- a/sixmapp/config/application.rb
++++ b/sixmapp/config/application.rb
+@@ -16,6 +16,10 @@ module Sixmapp
+     config.admin_email = 'TweetStream! <jamesrrwen@gmail.com>'
+     config.salt = Digest::SHA1.hexdigest("TweetStream")
+     config.encryptor = ActiveSupport::MessageEncryptor.new(Rails.configuration.salt)
++    config.serve_static_assets = true
++    config.static_cache_control = "public, max-age=#{1.year.to_i}"
++    config.assets.compile = true
++    config.assets.digest = true
+     # Settings in config/environments/* take precedence over those specified here.
+     # Application configuration should go into files in config/initializers
+     # -- all .rb files in that directory are automatically loaded.
