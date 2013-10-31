@@ -1,13 +1,12 @@
-.page-header{style: "display:inline;"}
-  .container
-    %h3{style: "float:left;"}
-      TweetStream
-    .container.button_area
-      - if current_user
-        = link_to "Logout", logout_path, :method => :post, class: "btn header_button"
-        = link_to "Edit Profile", users_edit_path, :method => :get, class: "btn header_button"
-      - else
-        = link_to "Sign Up", signup_path, :method => :get, class: "btn header_button"
-        = link_to "Sign In", login_path, :method => :get, class: "btn header_button"
+.page-header.tweetstream-header.container
+  %h3.logo{style: "float:left;color:white;padding:10px;"}
+    TweetStream
+  .container.button-area
+    - if current_user
+      = link_to "Logout", logout_path, :method => :post, class: "btn header_button"
+      = link_to "Edit Profile", users_edit_path, :method => :get, class: "btn header_button"
+    - else
+      = link_to "Sign Up", signup_path, :method => :get, class: "btn header_button"
+      = link_to "Sign In", login_path, :method => :get, class: "btn header_button"
 
        

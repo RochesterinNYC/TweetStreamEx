@@ -11,7 +11,21 @@ ul {
     line-height:12px;
   }
 }
-.header_button {
-  display:block;
-  float:right;
+.tweetstream-header {
+  background-color: #4099FF;
+  width:100%;
+  margin: 0px;
+  padding: 0px;
+  display: inline-block; 
+  .logo {
+    font-size: 1.5em;
+  }
+  .button-area {
+    .header_button {
+      display:block;
+      float:right;
+      padding: 5px;
+      margin: 15px;
+    }
+  }
 }
