@@ -85,5 +85,9 @@ TweetStreamUser.validateError = (data) ->
 TweetStreamUser.validateSuccess = (data) ->
   if data.status is 'success'
     document.location.href = document.location.protocol + "//" + document.location.host + '/signup?success=1'
+  else if (data.status is 'error' and data.message is 'user already exists')
+    $('#id_account_email').css({border: '1px solid #c94435'})
+    $('#user_exists_errorlist').show()
+    TweetStreamUser.showError()
   else if (data.status is 'error')
     TweetStreamUser.showError()

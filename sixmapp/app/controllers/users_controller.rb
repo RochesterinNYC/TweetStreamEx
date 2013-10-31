@@ -25,7 +25,7 @@ class UsersController < ApplicationController
     if [first_name, last_name, email, password].any?(&:blank?)
       return render_success({status:"error", message: 'invalid create parameters'})
     end
-
+    
     #User already exists
     if User.exists?(email: email.downcase)
       return render_success({status:"error", message:"user already exists"})
