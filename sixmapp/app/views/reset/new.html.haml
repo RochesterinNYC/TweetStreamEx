@@ -1,11 +1,14 @@
-%h1.text-center Forgot Password Page
+%h2.text-center 
+  Forgot Your Password?
+%h3.text-center
+  No problem! We'll email you a way to reset it.
 .user-message#user-message-error{ style: "display:none;" }
   %ul
     %li.messages.user-error
       %p
         Please review your form for issues and re-submit.
 = if params[:success]
-  .user-message#user-message-success
+  .user-message.text-center#user-message-success
     %ul
       %li.messages.user-success
         %p
@@ -20,7 +23,7 @@
     %li 
       No account with that email address exists.
   %br
-  %input#submit.text-center.btn.btn-primary{ type: "button", value: "submit"}
+  %input#submit.text-center.btn.btn-primary{ type: "button", value: "Send Reset"}
 :javascript
   $(document).ready(function(){
     function formSubmit(){

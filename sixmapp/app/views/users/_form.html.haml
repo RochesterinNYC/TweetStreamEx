@@ -1,4 +1,4 @@
-.user-message#user-message-error{ style: "display:none;" }
+.user-message.text-center#user-message-error{ style: "display:none;" }
   %ul
     %li.messages.user-error
       %p
@@ -33,7 +33,8 @@
     %li 
       Please ensure your password confirmation matches your password.
   %br
-  %input#submit{ type: "button", value: "submit"}
+  %br
+  %input#submit.btn.btn-primary{ type: "button", value: "Register"}
   %ul.errorlist#form_errorlist{ style: "display:none;" }
     %li 
       Please fix the above form issues before proceeding and submitting.

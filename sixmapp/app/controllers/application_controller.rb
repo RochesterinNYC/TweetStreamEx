@@ -12,8 +12,7 @@ class ApplicationController < ActionController::Base
     if current_user
       return true
     end
-    redirect_to login_path
-        flash[:notice] = "Please login or sign up."
+    redirect_to login_path(not_logged_in: 1)
   end
 
   def new_broadcasts   

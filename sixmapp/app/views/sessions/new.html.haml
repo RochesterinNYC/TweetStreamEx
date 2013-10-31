@@ -1,14 +1,22 @@
+%br
+%br
+%br
+= if params[:not_logged_in]
+  %h3.text-center
+    You must be logged in to access that page.  
 = if params[:reset]
-  %h2
+  %h3.text-center
     Your password was successfully reset!
 = if params[:confirm]
-  %h2
+  %h4.text-center
     The account with email #{params[:email]} was successfully confirmed! Please login now.
 = if params[:confirm_failure]
-  %h2
+  %h4.text-center
     The account with email #{params[:email]} was not confirmed!
-  = button_to "Resend Confirmation", users_resend_path, : method => :post
-%form{ action: "verify", method: "post" }
+  = button_to "Resend Confirmation", users_resend_path, :method => :post
+%form.container.text-center{ action: "verify", method: "post", style: "margin-top: 20px;"}
+  %h3
+    Login:
   %input{:type=>"hidden", :name=>"authenticity_token", :value=>form_authenticity_token.to_s}
   %label
     Email Address
@@ -19,8 +27,6 @@
   %input#session_password{ type: "password", name: "session[password]"}
     .actions
       %br
-      %input{ name: "commit", type: "submit", value: "Log in" } 
+      %input{ name: "commit", type: "submit", value: "Log in", class: "btn btn-primary"}
+      = link_to "Forgot Password", forgot_password_path, :method => :get, class: "btn btn-primary", style: "color:white;"
       %br
-
-= link_to "Sign Up", signup_path
-

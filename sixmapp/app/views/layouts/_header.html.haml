@@ -12,10 +12,10 @@
       = link_to "Broadcast", users_broadcast_path, :method => :get, class: "btn header_button"
 - if current_user && !new_broadcasts.blank?
   - new_broadcasts.each do |broadcast|
-    .page-header.container
+    .page-header.container.text-center
       %h4
         New Broadcast from Admin #{User.find(broadcast.admin_id).name}
       #{broadcast.message}
       %br
-      Announced at #{broadcast.created_at}
+      Announced on #{broadcast.created_at.to_formatted_s(:long_ordinal)}
     - broadcast.message_read(current_user.id)

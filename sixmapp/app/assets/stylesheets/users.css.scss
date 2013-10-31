@@ -2,13 +2,20 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.user-message{
+  ul{
+    list-style: none;
+  }
+}
+
 ul {
   &.errorlist{
     color: #c94435;
     list-style: none;
+    margin-bottom: 0px;
   }
   li{
-    line-height:12px;
+    line-height:12px; 
   }
 }
 .tweetstream-header {
@@ -25,7 +32,7 @@ ul {
       display:block;
       float:right;
       padding: 5px;
-      margin: 15px;
+      margin: 22px 15px 15px 15px;
     }
   }
 }

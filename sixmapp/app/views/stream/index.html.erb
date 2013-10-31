@@ -1,6 +1,6 @@
-<meta http-equiv="refresh" content="7" >
-<h1>Tweets About ...</h1>
-<%= form_tag("/stream/index", :method => "get") do %> 
+<%= form_tag("/dashboard", :method => "get", class: "container text-center") do %> 
+  <meta http-equiv="refresh" content="7" >
+  <h2>Tweets About ...</h2>
   <div>
     <%= label_tag(:q, "term0:") %>
     <%= text_field_tag(:term0) %>
@@ -13,8 +13,9 @@
     <%= label_tag(:q, "nterm1:") %>
     <%= text_field_tag(:nterm1) %>
   </div>
+  <br/>
   <div>
-    <%= submit_tag("Search") %>
+    <%= submit_tag("Search", class: 'btn btn-primary') %>
   </div>
 
 <% end %>

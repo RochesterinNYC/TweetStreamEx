@@ -38,6 +38,7 @@ TweetStreamPasswordReset.validate = (fields) ->
   fields = $('input.required_field') unless fields
   error_free = true
   #error_free = TweetStreamPasswordReset.checkAccountEmail($('#email').attr('value'))
+
   for el in fields
     el = $(el)
     if ($.trim(el.val()).length is 0) or (el.attr('data_default_value') and $.trim(el.val()) is el.attr('data_default_value')) or (el.attr('value') == '')
@@ -71,7 +72,7 @@ TweetStreamPasswordReset.resetPassword = () ->
     el.css({border: '1px solid #b4b4b4'})
   $('.errorlist').hide()
   $('#form_errors').html('')
-  valid = true
+  valid = TweetStreamPasswordReset.validate()
   if valid
     TweetStreamPasswordReset.hideError()
     TweetStreamPasswordReset.submitReset()

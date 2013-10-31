@@ -1,16 +1,16 @@
-%h1 Edit User
-
+%h1.text-center Edit User
+%br
 = if params[:success]
-  %h2
+  %h3.text-center
     Your account was successfully updated!
 = if params[:failure]
-  %h2
+  %h3.text-center
     An error occurred. Your account was not updated.
 = if params[:confirm]
-  %h2
+  %h3.text-center
     Your account was successfully confirmed!
 = if params[:confirm_failure]
-  %h2
+  %h3.text-center
     Your account was not confirmed!
   = button_to "Resend Confirmation", users_resend_path, :method => :post
 = if params[:sent]
@@ -20,21 +20,28 @@
   %input{:type=>"hidden", :name =>"authenticity_token", :value=>form_authenticity_token.to_s}
   %label
     User Email: 
-    = @user.email
+    %strong
+      = @user.email
+  %br
   %label
     Account Confirmed:
-    - if @user.unconfirmed?
-      No
-    - else
-      Yes
+    %strong
+      - if @user.unconfirmed?
+        No
+      - else
+        Yes
+  %br
   %label
     Account Type:
-    = @user.user_type.capitalize
+    %strong
+      = @user.user_type.capitalize
+  %br
   %label
     Name:
-    %input#first_name{ type: "text", name: "user[name]", value: @user.name }
+    %input.text-center#first_name{ type: "text", name: "user[name]", value: @user.name }
+  %br    
   .actions
-    %input{ name: "commit", type: "submit", value: "Update" }
+    %input{ name: "commit", type: "submit", value: "Update", class: "btn btn-info"}
 
 %br
 %br
