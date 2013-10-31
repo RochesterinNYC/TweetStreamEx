@@ -60,6 +60,18 @@ class UsersController < ApplicationController
     redirect_to :controller => 'users', :action => 'edit', :sent => 1 
   end
   
+  def broadcast    
+  end
+  
+  def broadcast_out
+    admin_id = current_user.id
+    message = params[:broadcast]
+    b = BroadcastMessage.new(admin_id: admin_id, message: message) 
+    if b.save
+      redirect_to "/users/broadcast?broadcasted_out=1"
+    end
+  end
+  
   def update
     if @user.update_attr(params)
       redirect_to "/users/edit?success=1" 

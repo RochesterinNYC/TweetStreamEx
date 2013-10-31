@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  VALID_TYPES = %w{ REGULAR PREMIUM UNCONFIRMED } 
+  VALID_TYPES = %w{ REGULAR PREMIUM ADMIN UNCONFIRMED } 
 
   validates :email, presence: true, uniqueness: true
   validates :name, presence: true
@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   has_secure_password
   
   after_create :deliver_confirmation_email
+  after_create :mark_old_broadcasts
 
   VALID_TYPES.each do |user_type|
     scope user_type.to_s.downcase, -> { where(user_type: user_type) }
@@ -23,6 +24,7 @@ class User < ActiveRecord::Base
   def deliver_confirmation_email
     UserMailer.confirmation_email(self).deliver if self.unconfirmed?
   end
+  
   def confirm_user 
     if self.unconfirmed?
       self.regular!
@@ -39,6 +41,23 @@ class User < ActiveRecord::Base
   def update_attr(params)
     self.name = params[:user][:name]
     self.save
+  end
+  
+  def get_new_broadcasts
+    newBroadcasts = []
+    BroadcastMessage.all.each do |broadcast|
+      if !broadcast.user_has_viewed(self.id)
+        newBroadcasts << broadcast  
+      end
+    end
+    newBroadcasts
+  end
+
+  def mark_old_broadcasts
+    BroadcastMessage.all.each do |broadcast|
+      broadcast.users_viewed << self.id
+      broadcast.save
+    end
   end
 end
 

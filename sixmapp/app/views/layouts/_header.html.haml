@@ -8,5 +8,14 @@
     - else
       = link_to "Sign Up", signup_path, :method => :get, class: "btn header_button"
       = link_to "Sign In", login_path, :method => :get, class: "btn header_button"
-
-       
+    - if current_user && current_user.admin?
+      = link_to "Broadcast", users_broadcast_path, :method => :get, class: "btn header_button"
+- if current_user && !new_broadcasts.blank?
+  - new_broadcasts.each do |broadcast|
+    .page-header.container
+      %h4
+        New Broadcast from Admin #{User.find(broadcast.admin_id).name}
+      #{broadcast.message}
+      %br
+      Announced at #{broadcast.created_at}
+    - broadcast.message_read(current_user.id)

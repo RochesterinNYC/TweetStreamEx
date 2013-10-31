@@ -6,6 +6,8 @@ Sixmapp::Application.routes.draw do
   get '/users/edit' => 'users#edit'
   post '/users/update' => 'users#update' 
   post '/users/resend' => 'users#resend' 
+  get '/users/broadcast' => 'users#broadcast'
+  post '/users/broadcast_out' => 'users#broadcast_out', :as => 'broadcast_out'
   
   #reset request form
   get '/reset/forgot' => 'reset#new', :as => 'forgot_password' 

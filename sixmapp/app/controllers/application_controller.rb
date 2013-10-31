@@ -3,7 +3,6 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   before_filter :require_user
-
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
@@ -16,6 +15,11 @@ class ApplicationController < ActionController::Base
     redirect_to login_path
         flash[:notice] = "Please login or sign up."
   end
+
+  def new_broadcasts   
+    @new_broadcasts = current_user.get_new_broadcasts
+  end
+  helper_method :new_broadcasts
 
   def render_success_plain(body)
     render json: body, status: 200, callback: params[:callback]

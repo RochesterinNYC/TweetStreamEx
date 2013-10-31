@@ -1,0 +1,14 @@
+= if params[:broadcasted_out]
+  %h2
+    Your broadcast was sent to other users.
+%form{ action: "broadcast_out", method: "post" }
+  %input{:type=>"hidden", :name=>"authenticity_token", :value=>form_authenticity_token.to_s}
+  %label
+    Broadcast Message
+  %input#broadcast{ type: "text", name: "broadcast"}
+    .actions
+      %br
+      %input{ name: "commit", type: "submit", value: "Broadcast" }
+      %br
+
+= link_to "Back", users_edit_path
