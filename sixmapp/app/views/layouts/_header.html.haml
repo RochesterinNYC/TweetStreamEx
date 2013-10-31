@@ -1,3 +1,13 @@
-- if current_user
-  = button_to "Logout", logout_path, :method => :post
-  = button_to "Edit Profile", users_edit_path, :method => :get
+.page-header{style: "display:inline;"}
+  .container
+    %h3{style: "float:left;"}
+      TweetStream
+    .container.button_area
+      - if current_user
+        = link_to "Logout", logout_path, :method => :post, class: "btn header_button"
+        = link_to "Edit Profile", users_edit_path, :method => :get, class: "btn header_button"
+      - else
+        = link_to "Sign Up", signup_path, :method => :get, class: "btn header_button"
+        = link_to "Sign In", login_path, :method => :get, class: "btn header_button"
+
+       
