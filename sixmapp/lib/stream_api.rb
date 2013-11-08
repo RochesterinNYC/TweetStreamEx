@@ -5,6 +5,8 @@ class TweetStreamAPI
   # These are the twitter credentials for the app registered
   # with 1337scriptdaddy@gmail.com
   @@tweet_array = Array.new
+  @@term0 = ""
+  @@term1 = ""
 
   Twitter.configure do |config|
     config.consumer_key       = 'hIl8qNe1VqxKJuxHhWoA'
@@ -16,28 +18,36 @@ class TweetStreamAPI
 
   #Search tweets matching search terms and return them
   def get_tweets term0, term1, lang
-    puts "********"
-    puts term0
-    puts "********"
-    search_results = Array.new
-    if( (term0 == nil and term1 == nil) or (term0 == "" and term1 == "") )
-      return search_results # will be blank
+    if ( (term0 == nil and term1 == nil) or (term0 == "" and term1 == "") )
+      return Array.new # return an empty array if search terms are empty
     end
-    puts ""
-    puts "------------------------------------------------------------"
-    Twitter.search(term0, :count => 10, :result_type => "recent").results.map do |status|
+    #if search terms changed
+    if (@@term0 != term0 or @@term1 != term1)
+      @@term0 = term0
+      @@term1 = term1
+      @@tweet_array = Array.new #reset array
+    end
+    Twitter.search(term0, :count => 10, :result_type => "recent").results.reverse.map do |status|
      
-      # Come up with more efficient implementation of case-insensitive string match
-      if (status.lang == lang and (verify_terms term0, status))
+      if (status.lang == lang and (verify_terms term0, status) and not (already_exist status))
          mark_terms term0, status
-         @@tweet_array.unshift status
-         puts "#{status.created_at} #{status.user.location} #{status.id} #{status.lang}"
-         puts  "#{status.user.id} #{status.from_user}: #{status.text}"
-         puts "------------------------------------------------------------"
-         puts ""
+         @@tweet_array.push status
+         #puts "#{status.created_at} #{status.user.location} #{status.id} #{status.lang}"
+         #puts  "#{status.user.id} #{status.from_user}: #{status.text}"
+         #puts "------------------------------------------------------------"
       end
     end
     return @@tweet_array
+  end
+
+  #Ensure that a tweet doesn't already exist in the tweet_array from previous search results
+  def already_exist status
+    @@tweet_array.each do |tweet|
+      if (tweet.id == status.id)
+        return true
+      end
+    end
+    return false
   end
 
   #Verifying that tweets returned by Twitter Search API actually include the search terms

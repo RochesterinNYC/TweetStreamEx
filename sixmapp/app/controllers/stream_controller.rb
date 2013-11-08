@@ -8,7 +8,8 @@ class StreamController < ApplicationController
       puts "Param #{key}: #{value}"
     end
 
-    #this feature work
+    #Language is set to English for now
+    #Only term0 works for now
     @tweets = @@stream.get_tweets params[:term0], params[:term1], "en"
     #@tweets = @@stream.get_tweets 'apple'    
   end
