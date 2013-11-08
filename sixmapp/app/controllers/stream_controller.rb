@@ -9,7 +9,7 @@ class StreamController < ApplicationController
     end
 
     #this feature work
-    @tweets = @@stream.get_tweets params[:term0], params[:term1], params[:nterm0], params[:nterm1]
-    #@tweets = @@stream.get_tweets 'apple', 'pie', 'ipad', 'new'    
+    @tweets = @@stream.get_tweets params[:term0], params[:term1], "en"
+    #@tweets = @@stream.get_tweets 'apple'    
   end
 end

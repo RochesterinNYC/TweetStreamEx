@@ -65,7 +65,7 @@ GEM
       debugger-ruby_core_source (~> 1.2.3)
     debugger-linecache (1.2.0)
     debugger-ruby_core_source (1.2.3)
-    diff-lcs (1.2.4)
+    diff-lcs (1.2.5)
     em-http-request (1.0.3)
       addressable (>= 2.2.3)
       cookiejar
@@ -74,14 +74,14 @@ GEM
       http_parser.rb (>= 0.5.3)
     em-socksify (0.3.0)
       eventmachine (>= 1.0.0.beta.4)
-    em-twitter (0.3.0)
+    em-twitter (0.2.2)
       eventmachine (~> 1.0)
-      http_parser.rb (>= 0.6.0.beta.2, < 0.7)
-      simple_oauth (~> 0.2)
+      http_parser.rb (~> 0.5)
+      simple_oauth (~> 0.1)
     erubis (2.7.0)
     eventmachine (1.0.3)
     execjs (2.0.2)
-    fabrication (2.9.0)
+    fabrication (2.9.1)
     factory_girl (4.2.0)
       activesupport (>= 3.0.0)
     factory_girl_rails (4.2.0)
@@ -89,9 +89,9 @@ GEM
       railties (>= 3.0.0)
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
-    ffi (1.9.0)
+    ffi (1.9.3)
     formatador (0.2.4)
-    guard (2.2.2)
+    guard (2.2.3)
       formatador (>= 0.2.4)
       listen (~> 2.1)
       lumberjack (~> 1.0)
@@ -104,7 +104,7 @@ GEM
       childprocess (>= 0.2.3)
       guard (>= 1.1)
       spork (>= 0.8.4)
-    haml (4.0.3)
+    haml (4.0.4)
       tilt
     haml-rails (0.4)
       actionpack (>= 3.1, < 4.1)
@@ -112,7 +112,7 @@ GEM
       haml (>= 3.1, < 4.1)
       railties (>= 3.1, < 4.1)
     hike (1.2.3)
-    http_parser.rb (0.6.0.beta.2)
+    http_parser.rb (0.5.3)
     i18n (0.6.5)
     jbuilder (1.5.2)
       activesupport (>= 3.0.0)
@@ -150,7 +150,6 @@ GEM
     multipart-post (1.2.0)
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
-    pg (0.17.0)
     polyglot (0.3.3)
     pry (0.9.12.2)
       coderay (~> 1.0.5)
@@ -201,8 +200,8 @@ GEM
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
       rspec-mocks (~> 2.14.0)
-    rspec-core (2.14.6)
-    rspec-expectations (2.14.3)
+    rspec-core (2.14.7)
+    rspec-expectations (2.14.4)
       diff-lcs (>= 1.1.3, < 2.0)
     rspec-mocks (2.14.4)
     rspec-rails (2.14.0)
@@ -286,7 +285,7 @@ GEM
     uglifier (2.3.0)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
-    unicorn (4.6.3)
+    unicorn (4.7.0)
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
@@ -300,7 +299,7 @@ PLATFORMS
 
 DEPENDENCIES
   annotate
-  bcrypt-ruby
+  bcrypt-ruby (~> 3.0.0)
   capybara (= 2.1.0)
   childprocess (= 0.3.6)
   coffee-rails (~> 4.0.0)
@@ -315,7 +314,6 @@ DEPENDENCIES
   jquery-rails
   libnotify (= 0.8.0)
   mailcatcher
-  pg
   pry-debugger
   pry-rails
   pry-remote
@@ -332,6 +330,7 @@ DEPENDENCIES
   sqlite3
   turbolinks
   tweetstream (= 2.5.0)
+  twitter
   twitter-bootstrap-rails
   uglifier (>= 1.3.0)
   unicorn

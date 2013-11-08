@@ -1,74 +1,79 @@
-require 'tweetstream'
-require 'thread'
+require 'twitter'
 
 class TweetStreamAPI
-  def initialize
-  end
-  @@tweet_array = Array.new
-  @@accessor_array = Array.new
-  @@mutex = Mutex.new
+
   # These are the twitter credentials for the app registered
   # with 1337scriptdaddy@gmail.com
-  TweetStream.configure do |config|
+  @@tweet_array = Array.new
+
+  Twitter.configure do |config|
     config.consumer_key       = 'hIl8qNe1VqxKJuxHhWoA'
     config.consumer_secret    = 'iQxdv9Ak6T9fM8DtvdGAdGZGDqfvyiTiCXbPaXI0U8Y'
     config.oauth_token        = '1944743442-3pV23TQz68mT0GeyoINA6HDwRoe78UvWwLRLWuY'
     config.oauth_token_secret = 'w6hMGXVwNKCjL60jhEDXJs1nzhMP0r5Rmsxoa7wSRc'
   #  config.auth_method        = :oauth
   end 
-=begin
-TweetStream::Daemon.new('tracker').track('term1', 'term2') do |status|
-  puts status.text
-end
-=end
 
-  # getting tweets must be run on a separate thread
-  # or the everything else will get blocked.
-  # Because tweet_array can be accessed by the tweet_get_thread
-  # and by get_tweets, we must surround it with mutex.synchronize
-  # so that only one thread can use the array at a time. We don't
-  # want a simultaneous read and write or we might get funny values
-
-=begin
-  @@initialized = false
-  @@stop_thread = true
-  def start_tweet_get_thread term0, term1, nterm0, nterm1
-    puts term0; puts term1
-    tsc = TweetStream::Client.new
-    tweet_get_thread = Thread.new do
-      if(@@stop_thread and @@initialized)
-        puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
-        puts "^^^^ you tried to stop me ^^^^^^"
-        puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
-        @@stop_thread = false
-        tsc.stop if @@initialized
-        @@initialized = true
-        puts "!!!!!!!! Initialized is true !!!!!!!!!!"
+  #Search tweets matching search terms and return them
+  def get_tweets term0, term1, lang
+    puts "********"
+    puts term0
+    puts "********"
+    search_results = Array.new
+    if( (term0 == nil and term1 == nil) or (term0 == "" and term1 == "") )
+      return search_results # will be blank
+    end
+    puts ""
+    puts "------------------------------------------------------------"
+    Twitter.search(term0, :count => 10, :result_type => "recent").results.map do |status|
+     
+      # Come up with more efficient implementation of case-insensitive string match
+      if (status.lang == lang and (verify_terms term0, status))
+         mark_terms term0, status
+         @@tweet_array.unshift status
+         puts "#{status.created_at} #{status.user.location} #{status.id} #{status.lang}"
+         puts  "#{status.user.id} #{status.from_user}: #{status.text}"
+         puts "------------------------------------------------------------"
+         puts ""
       end
-      tsc.track(term0,term1) do |status, client|
-        
-        if(@@stop_thread)
-          tsc.stop
-          puts "this never prints"
-          puts "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
-          puts "^^^^ you tried to stop me ^^^^^^"
-          puts "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
-          @@stop_thread = false
-        end
-        puts term0; puts term1; puts nterm0; puts nterm1
-        puts status.text
-        tweet = status.text.downcase
-        rejected = false
-        #rejected = true if (nterm0 != nil and tweet.include? nterm0.downcase)         
-        #rejected = true if (nterm1 != nil and tweet.include? nterm1.downcase)         
-        unless rejected
-          puts status.text
-          @@mutex.synchronize {@@tweet_array.push status.text}
-        end 
+    end
+    return @@tweet_array
+  end
+
+  #Verifying that tweets returned by Twitter Search API actually include the search terms
+  #Twitter Search API returns results it thinks are relevant but not include the search terms
+  def verify_terms search_term, status
+    split_terms = search_term.split(' ')
+    split_terms.each do |term|
+      unless status.text.downcase.include? term.downcase
+        return false
+      end
+    end
+    return true
+  end
+
+  #Highlight search terms in the statuses
+  def mark_terms search_term, status
+    split_terms = search_term.split(' ')
+    split_terms.each do |term|
+      unless term == nil or term == ""
+        status.text.gsub! /#{term}/i, "<mark>#{term}</mark>"
       end
     end
   end
-=end
+
+end
+
+
+
+
+
+
+
+
+
+
+=begin
 
   @@term0 = ""
   @@term1 = ""
@@ -177,24 +182,5 @@ end
   end
 
 end
-=begin
-      if( @@term0_tmp == term0 and @@term1_tmp == term1 and @@nterm0_tmp == nterm0 and @@nterm1_tmp == nterm1)
-          puts "**** SAME ****"
-          puts "!!!!!!!!!!!!!!"
-          @@mutex.synchronize {return @@tweet_array}
-      else
-          puts "**** DIFFERENT ****"
-          puts "$$$$$$$$$$$$$$$$$$$"
-          @@stop_thread = true
-          @@term0_tmp = term0
-          @@term1_tmp = term1
-          @@nterm0_tmp = nterm0
-          @@nterm1_tmp = nterm1
-          start_tweet_get_thread term0, term1, nterm0, nterm1
-          @@mutex.synchronize {return @@tweet_array}
-      end
-    
-  end 
+
 =end
-
-
