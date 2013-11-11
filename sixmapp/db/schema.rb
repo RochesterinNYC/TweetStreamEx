@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131031173827) do
+ActiveRecord::Schema.define(version: 20131110213658) do
 
   create_table "broadcast_messages", force: true do |t|
     t.string   "message"
@@ -27,7 +27,10 @@ ActiveRecord::Schema.define(version: 20131031173827) do
     t.string   "password_digest"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "user_type",       default: "UNCONFIRMED"
+    t.string   "user_type",         default: "UNCONFIRMED"
+    t.string   "provider"
+    t.string   "uid"
+    t.string   "profile_image_url"
   end
 
 end

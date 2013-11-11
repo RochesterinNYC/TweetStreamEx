@@ -3,7 +3,7 @@
     TweetStream
   .container.button-area
     - if current_user
-      = link_to "Logout", logout_path, :method => :post, class: "btn header_button"
+      = link_to "Logout", logout_path, :method => 'delete', class: "btn header_button", id: 'logout'
       = link_to "Edit Profile", users_edit_path, :method => :get, class: "btn header_button"
     - else
       = link_to "Sign Up", signup_path, :method => :get, class: "btn header_button"

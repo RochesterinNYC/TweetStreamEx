@@ -5,10 +5,15 @@ gem 'rails', '4.0.0'								# Bundle edge Rails instead: gem 'rails', github: 'r
 
 # JEFFREY'S GEMS
 gem 'tweetstream', '2.5.0'
-gem 'puma'
+gem 'puma'                          # note to comment out unicorn when using puma
 gem 'twitter'
 
 # END JEFFREY'S GEMS
+
+# OAUTH AUTHENTICATION GEMS
+gem 'omniauth'
+gem 'omniauth-twitter'
+
 
 gem 'twitter-bootstrap-rails'
 gem 'haml'
@@ -39,6 +44,8 @@ group :development, :test do
   gem 'pry-rails'
   gem 'pry-remote'
   gem 'pry-debugger'
+  gem 'better_errors'               # more helpful error screens for dev
+  gem 'binding_of_caller'         # enable REPL and local/instance variable inspection
 end
 
 group :test do
@@ -46,9 +53,9 @@ group :test do
   gem 'capybara', '2.1.0'
   gem 'annotate'
   gem 'factory_girl_rails', '4.2.0'
-  gem 'database_cleaner', github: 'bmabey/database_cleaner'
-  # gem 'growl', '1.0.3'
-  gem 'libnotify', '0.8.0'				# Uncomment these lines on Linux.
+  gem 'database_cleaner'          # removed github address because of PEM auth issues
+  gem 'libnotify' if /linux/ =~ RUBY_PLATFORM
+  gem 'growl' if /darwin/ =~ RUBY_PLATFORM
 end
 
 group :production do
@@ -62,7 +69,7 @@ end
 
 # Use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0.0', :require => 'bcrypt'
-gem 'unicorn'											# Use unicorn as the app server
+# gem 'unicorn'											# Use unicorn as the app server
 
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development

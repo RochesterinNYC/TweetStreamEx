@@ -6,13 +6,17 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = User.find_by(email: params[:session][:email])
-    if user && user.authenticate(params[:session][:password])
-      session[:user_id] = user.id
-      redirect_to dashboard_path
-    else
-      render "new"
-    end  
+    user = User.find_or_create_by_oauth(request.env['omniauth.auth'])
+    session[:user_id] = user.id
+    # render text: request.env["omniauth.auth"].inspect
+    redirect_to dashboard_path, notice: "Logged in as #{user.name}"
+    # user = User.find_by(email: params[:session][:email])
+    # if user && user.authenticate(params[:session][:password])
+    #   session[:user_id] = user.id
+    #   redirect_to dashboard_path
+    # else
+    #   render "new"
+    # end
   end
 
   def destroy
