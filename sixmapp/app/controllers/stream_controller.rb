@@ -10,7 +10,8 @@ class StreamController < ApplicationController
 
     #Language is set to English for now
     #Only term0 works for now
-    @tweets = @@stream.get_tweets params[:term0], params[:term1], "en"
+    @tweets = @@stream.get_tweets params[:keywords], params[:exclude], params[:language],
+            params[:latitude], params[:longitude], params[:radius], params[:distance]
     #@tweets = @@stream.get_tweets 'apple'    
   end
 end

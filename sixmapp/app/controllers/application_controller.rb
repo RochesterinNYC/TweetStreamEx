@@ -4,11 +4,12 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_filter :require_user
   def current_user
-    @current_user ||= User.find(session[:user_id]) if session[:user_id]
+    #@current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
   helper_method :current_user
   
   def require_user
+    return true #remove this later
     if current_user
       return true
     end
