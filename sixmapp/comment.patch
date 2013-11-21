@@ -1,0 +1,188 @@
+diff --git a/sixmapp/lib/stream_api.rb b/sixmapp/lib/stream_api.rb
+index ea59686..730b3ff 100644
+--- a/sixmapp/lib/stream_api.rb
++++ b/sixmapp/lib/stream_api.rb
+@@ -2,8 +2,8 @@ require 'twitter'
+ 
+ class TweetStreamAPI
+ 
+-  # These are the twitter credentials for the app registered
+-  # with 1337scriptdaddy@gmail.com
++  #These are the twitter credentials for the app registered
++  #with 1337scriptdaddy@gmail.com
+   @@tweet_array = Array.new
+   @@keywords = ""
+   @@term1 = ""
+@@ -13,31 +13,37 @@ class TweetStreamAPI
+     config.consumer_secret    = 'iQxdv9Ak6T9fM8DtvdGAdGZGDqfvyiTiCXbPaXI0U8Y'
+     config.oauth_token        = '1944743442-3pV23TQz68mT0GeyoINA6HDwRoe78UvWwLRLWuY'
+     config.oauth_token_secret = 'w6hMGXVwNKCjL60jhEDXJs1nzhMP0r5Rmsxoa7wSRc'
+-  #  config.auth_method        = :oauth
+   end 
+ 
+-  #Search tweets matching search terms and return them
++  #Search tweets matching keywords but excluding forbidden words
++  #matching language and location
+   def get_tweets keywords, excluded, language, latitude, longitude, radius, distance
++
++    #Return an empty array if search terms are empty
+     if (keywords == nil  or keywords == "")
+-      return Array.new # return an empty array if search terms are empty
++      return Array.new 
+     end
+-    #if search terms changed
++
++    #If search terms changed
+     if (@@keywords != keywords)
+       @@keywords = keywords
+-      @@tweet_array = Array.new #reset array
++
++      #reset array
++      @@tweet_array = Array.new 
+     end
++
++    #Search 10 most recent tweets using the Twitter API, first filtering by keywords, language and location
+     Twitter.search(keywords, :lang => language, :count => 10, :result_type => "recent",
+             :geocode => "#{latitude},#{longitude},#{radius}#{distance}").results.reverse.map do |status|
+     
++      #Push tweet objects if keywords match, if they are not already pushed, and if they don't include
++      #excluded terms
+       if ((verify_terms keywords, status) and not (already_exist status) and not (contains_excluded_terms excluded, status))
+          mark_terms keywords, status
+          @@tweet_array.push status
+-         puts  "#{status.user.id} #{status.from_user}: #{status.text}"
+-         #puts "#{status.created_at} #{status.user.location} #{status.id} #{status.lang}"
+-         #puts  "#{status.user.id} #{status.from_user}: #{status.text}"
+-         #puts "------------------------------------------------------------"
+       end
+     end
++
+     return @@tweet_array
+   end
+ 
+@@ -86,124 +92,3 @@ class TweetStreamAPI
+   end
+ 
+ end
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-=begin
+-
+-  @@keywords = ""
+-  @@term1 = ""
+-  @@first_wakeup = true
+-  @@stop = false
+-  @@reset_terms = false
+-  
+-  def start_th
+-  @@stream_th = Thread.new do
+-    while true 
+-      puts "!!!!!!!!!!!!! SLEEPING !!!!!!!!!!!!!!"
+-      Thread.stop if @@first_wakeup
+-      puts "!!!!!!!!!!!!! WAKEUP !!!!!!!!!!!!!!!"
+-      @@first_wakeup = false
+-      TweetStream::Client.new.track(@@keywords, @@term1) do |status, client|
+-        break_flag = false
+-        if @@stop
+-          client.stop
+-          puts "<<<<<<<<<<<<<<< STOP >>>>>>>>>>>>>>>>>"
+-          @@stop = false
+-          Thread.stop
+-          break_flag = true
+-        end
+-        break if break_flag
+-        if @@reset_terms
+-          client.stop
+-          puts "<<<<<<<<<<<<<<< RESET >>>>>>>>>>>>>>>>>"
+-          @@reset_terms = false
+-          Thread.stop
+-          puts "############## RESTART ################"
+-          break_flag = true
+-        end
+-      
+-        break if break_flag
+-        puts status.text
+-        @@mutex.synchronize {@@tweet_array.push status.text}
+-      end
+-      puts "##### BROKE EEEEE"
+-    end
+-  end
+-  end
+-  
+-
+-  # note that the thread is started and stopped every time 
+-  # this function is called. This is not ideal, since the
+-  # user won't update the search terms often. Works for now...
+-
+-  @@keywords_old = ""
+-  @@term1_old = ""
+-  @@nkeywords_old = ""
+-  @@nterm1_old = ""
+-  @@nothing = Array.new
+-  def get_tweets keywords, term1, nkeywords, nterm1
+-    start_th if @@first_wakeup
+-
+-    puts "keywords == #{keywords == nil}"; puts "term1 == #{term1 ==nil}"
+-    # case 1: blank terms
+-    if( (keywords == nil and term1 == nil) or (keywords == "" and term1 == "") )
+-      puts "!!!!!!! nothing !!!!!!!"
+-      unless @@first_wakeup
+-        @@stream_th.terminate
+-        while(@@stream_th.alive?)
+-          puts "die! die! die!"
+-        end   
+-      end
+-      return @@nothing
+-    elsif ( @@first_wakeup )
+-      
+-      @@stream_th.wakeup
+-      @@keywords_old = keywords
+-      @@term1_old = term1
+-      @@keywords = keywords
+-      @@term1 = term1
+-
+-      @@mutex.synchronize {return @@tweet_array}
+-
+-
+-    # case 2: different from last time
+-    elsif ( keywords != @@keywords_old or term1 != @@term1_old )
+-      puts "<><><><><><><>><><><> NEW TERMS <><><><><><><><><><><><><"
+-      @@keywords_old = keywords
+-      @@term1_old = term1
+-      @@keywords = keywords
+-      @@term1 = term1
+-
+-      @@stream_th.terminate
+-      while(@@stream_th.alive?)
+-        puts "die! die! die!"
+-      end
+-          
+-
+-      start_th
+-      
+-      @@mutex.synchronize {return @@tweet_array}
+-    
+-    # case 3: same terms as last time
+-    else
+-      puts " >>>>>>>>>>>>>> NOTHING NEW <<<<<<<<<<<<<<<<<<<"
+-      @@mutex.synchronize {return @@tweet_array}
+-    end
+-
+-    # case 3: same terms as last time
+-
+-    # case 4: new set of valid terms
+-
+-  end
+-
+-end
+-
+-=end
+\ No newline at end of file
