@@ -15,13 +15,12 @@
   = button_to "Resend Confirmation", users_resend_path, :method => :post
 = if params[:sent]
   %h2
-    The confirmation email was sent again. 
+    The confirmation email was sent again.
 %form.container.text-center{ action: "update", method: "post" }
   %input{:type=>"hidden", :name =>"authenticity_token", :value=>form_authenticity_token.to_s}
   %label
-    User Email: 
-    %strong
-      = @user.email
+    User Email:
+    %input.text-center#email{ type: "text", name: "user[email]", value: @user.email }
   %br
   %label
     Account Confirmed:
@@ -39,7 +38,7 @@
   %label
     Name:
     %input.text-center#first_name{ type: "text", name: "user[name]", value: @user.name }
-  %br    
+  %br
   .actions
     %input{ name: "commit", type: "submit", value: "Update", class: "btn btn-info"}
 

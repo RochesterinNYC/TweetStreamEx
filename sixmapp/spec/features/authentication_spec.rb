@@ -13,6 +13,18 @@ describe 'the application', type: :feature do
 	context 'when logged out' do
 
 		before(:each) do
+			Rails.application.routes.draw do
+				root to: 'dashboard#index'
+				get "/dashboard" => 'stream#index', :as => 'dashboard'
+				get '/fake_login' => 'fake_sessions#create', as: :fake_login
+				# get '/login', to: 'sessions#new', :as => "login"
+				match '/login' => redirect('/auth/twitter'), as: :login, via: [:get, :post]
+				# match '/login' => redirect('/auth/twitter'), as: :login, via: [:get, :post]
+				delete "/logout" => "sessions#destroy", as: :logout
+			end
+			user_data = {"provider" => 'twitter', "uid" => '1234',
+				"info" => {'name' => "Lev Brie"}
+			}
 			visit root_path
 		end
 
@@ -48,7 +60,8 @@ describe 'the application', type: :feature do
 		end
 
 		it 'has a logout link' do
-			expect(page).to have_link('Logout', href: logout_path)
+			p page
+			expect(page).to have_link('Logout', href: "/logout")
 		end
 
 		it "doesn't have a login link" do

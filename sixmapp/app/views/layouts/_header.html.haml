@@ -7,7 +7,7 @@
       = link_to "Edit Profile", users_edit_path, :method => :get, class: "btn header_button"
     - else
       = link_to "Sign Up", signup_path, :method => :get, class: "btn header_button"
-      = link_to "Sign In", login_path, :method => :get, class: "btn header_button"
+      = link_to "Sign In", "/auth/twitter", :method => :get, class: "btn header_button"
     - if current_user && current_user.admin?
       = link_to "Broadcast", users_broadcast_path, :method => :get, class: "btn header_button"
 - if current_user && !new_broadcasts.blank?

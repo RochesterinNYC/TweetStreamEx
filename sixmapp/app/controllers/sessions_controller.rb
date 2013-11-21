@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
   #exceptions = login + signup + logout
-  skip_before_filter :require_user, :only => [:new, :create]
+  skip_before_filter :require_user, :only => [:new, :create, :destroy]
   def new
     render "new"
   end
@@ -22,7 +22,7 @@ class SessionsController < ApplicationController
   def destroy
     session[:user_id] = nil
     flash[:notice] = "You have successfully logged out."
-    redirect_to login_path
+    redirect_to welcome_path
   end
 
 end

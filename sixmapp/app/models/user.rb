@@ -48,10 +48,10 @@ class User < ActiveRecord::Base
     self.save!
   end
 
-  def update_attr(params)
-    self.name = params[:user][:name]
-    self.save
-  end
+  # def update_attr(params)
+  #   self.name = params[:user][:name]
+  #   self.save
+  # end
 
   def get_new_broadcasts
     newBroadcasts = []

@@ -3,19 +3,13 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   before_filter :require_user
+  helper_method :current_user
+
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
-  helper_method :current_user
-  
-  def require_user
-    if current_user
-      return true
-    end
-    redirect_to login_path(not_logged_in: 1)
-  end
 
-  def new_broadcasts   
+  def new_broadcasts
     @new_broadcasts = current_user.get_new_broadcasts
   end
   helper_method :new_broadcasts
@@ -40,4 +34,15 @@ class ApplicationController < ActionController::Base
     render json: body.to_json, status: 412, callback: params[:callback]
   end
 
+  # private
+
+  def require_user
+    if current_user
+      unless current_user.email
+        redirect_to users_edit_path(current_user)
+      end
+    else
+      redirect_to welcome_path
+    end
+  end
 end

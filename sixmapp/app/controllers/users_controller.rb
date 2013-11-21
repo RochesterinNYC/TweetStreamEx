@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_filter :require_user, :only => [:new, :create, :confirm]
+  skip_before_filter :require_user, :only => [:new, :edit, :create, :update, :confirm]
   before_action :set_user, only: [:show, :destroy]
   before_action :set_secure_user, only: [:edit, :update, :resend]
 
@@ -15,6 +15,7 @@ class UsersController < ApplicationController
   end
 
   def edit
+
   end
 
   # POST /users
@@ -25,7 +26,7 @@ class UsersController < ApplicationController
     if [first_name, last_name, email, password].any?(&:blank?)
       return render_success({status:"error", message: 'invalid create parameters'})
     end
-    
+
     #User already exists
     if User.exists?(email: email.downcase)
       return render_success({status:"error", message:"user already exists"})
@@ -45,7 +46,7 @@ class UsersController < ApplicationController
       end
     end
   end
-  
+
   def confirm
     @user = User.find(Rails.configuration.encryptor.decrypt_and_verify(params[:id]))
     if @user.confirm_user
@@ -54,27 +55,27 @@ class UsersController < ApplicationController
       redirect_to "/login?confirm_fail=1&email=#{@user.email}"
     end
   end
- 
+
   def resend
     UserMailer.confirmation_email(@user).deliver
-    redirect_to :controller => 'users', :action => 'edit', :sent => 1 
+    redirect_to :controller => 'users', :action => 'edit', :sent => 1
   end
-  
-  def broadcast    
+
+  def broadcast
   end
-  
+
   def broadcast_out
     admin_id = current_user.id
     message = params[:broadcast]
-    b = BroadcastMessage.new(admin_id: admin_id, message: message) 
+    b = BroadcastMessage.new(admin_id: admin_id, message: message)
     if b.save
       redirect_to "/users/broadcast?broadcasted_out=1"
     end
   end
-  
+
   def update
-    if @user.update_attr(params)
-      redirect_to "/users/edit?success=1" 
+    if @user.update_attributes(user_params)
+      redirect_to "/users/edit?success=1"
     else
       redirect_to "/users/edit?failure=1"
     end
@@ -92,11 +93,11 @@ class UsersController < ApplicationController
     def set_user
       @user = User.find(params[:id])
     end
-    
+
     def set_secure_user
       @user = current_user
     end
-    
+
     def user_params
       params.require(:user).permit(:name, :email, :password)
     end
