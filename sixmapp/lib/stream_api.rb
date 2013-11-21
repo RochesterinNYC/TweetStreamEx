@@ -5,7 +5,7 @@ class TweetStreamAPI
   # These are the twitter credentials for the app registered
   # with 1337scriptdaddy@gmail.com
   @@tweet_array = Array.new
-  @@term0 = ""
+  @@keywords = ""
   @@term1 = ""
 
   Twitter.configure do |config|
@@ -17,21 +17,22 @@ class TweetStreamAPI
   end 
 
   #Search tweets matching search terms and return them
-  def get_tweets term0, term1, lang
-    if ( (term0 == nil and term1 == nil) or (term0 == "" and term1 == "") )
+  def get_tweets keywords, excluded, language, latitude, longitude, radius, distance
+    if (keywords == nil  or keywords == "")
       return Array.new # return an empty array if search terms are empty
     end
     #if search terms changed
-    if (@@term0 != term0 or @@term1 != term1)
-      @@term0 = term0
-      @@term1 = term1
+    if (@@keywords != keywords)
+      @@keywords = keywords
       @@tweet_array = Array.new #reset array
     end
-    Twitter.search(term0, :count => 10, :result_type => "recent").results.reverse.map do |status|
-     
-      if (status.lang == lang and (verify_terms term0, status) and not (already_exist status))
-         mark_terms term0, status
+    Twitter.search(keywords, :lang => language, :count => 10, :result_type => "recent",
+            :geocode => "#{latitude},#{longitude},#{radius}#{distance}").results.reverse.map do |status|
+    
+      if ((verify_terms keywords, status) and not (already_exist status) and not (contains_excluded_terms excluded, status))
+         mark_terms keywords, status
          @@tweet_array.push status
+         puts  "#{status.user.id} #{status.from_user}: #{status.text}"
          #puts "#{status.created_at} #{status.user.location} #{status.id} #{status.lang}"
          #puts  "#{status.user.id} #{status.from_user}: #{status.text}"
          #puts "------------------------------------------------------------"
@@ -50,7 +51,7 @@ class TweetStreamAPI
     return false
   end
 
-  #Verifying that tweets returned by Twitter Search API actually include the search terms
+  #Verify that tweets returned by Twitter Search API actually include the search terms
   #Twitter Search API returns results it thinks are relevant but not include the search terms
   def verify_terms search_term, status
     split_terms = search_term.split(' ')
@@ -60,6 +61,18 @@ class TweetStreamAPI
       end
     end
     return true
+  end
+
+  #Helper function to determine whether tweet contains excluded word
+  def contains_excluded_terms excluded, status
+    split_terms = excluded.split(' ')
+    split_terms.each do |term|
+      if status.text.downcase.include? term.downcase
+        #puts "#{status.text}"
+        return true
+      end
+    end
+    return false
   end
 
   #Highlight search terms in the statuses
@@ -85,7 +98,7 @@ end
 
 =begin
 
-  @@term0 = ""
+  @@keywords = ""
   @@term1 = ""
   @@first_wakeup = true
   @@stop = false
@@ -98,7 +111,7 @@ end
       Thread.stop if @@first_wakeup
       puts "!!!!!!!!!!!!! WAKEUP !!!!!!!!!!!!!!!"
       @@first_wakeup = false
-      TweetStream::Client.new.track(@@term0, @@term1) do |status, client|
+      TweetStream::Client.new.track(@@keywords, @@term1) do |status, client|
         break_flag = false
         if @@stop
           client.stop
@@ -131,17 +144,17 @@ end
   # this function is called. This is not ideal, since the
   # user won't update the search terms often. Works for now...
 
-  @@term0_old = ""
+  @@keywords_old = ""
   @@term1_old = ""
-  @@nterm0_old = ""
+  @@nkeywords_old = ""
   @@nterm1_old = ""
   @@nothing = Array.new
-  def get_tweets term0, term1, nterm0, nterm1
+  def get_tweets keywords, term1, nkeywords, nterm1
     start_th if @@first_wakeup
 
-    puts "term0 == #{term0 == nil}"; puts "term1 == #{term1 ==nil}"
+    puts "keywords == #{keywords == nil}"; puts "term1 == #{term1 ==nil}"
     # case 1: blank terms
-    if( (term0 == nil and term1 == nil) or (term0 == "" and term1 == "") )
+    if( (keywords == nil and term1 == nil) or (keywords == "" and term1 == "") )
       puts "!!!!!!! nothing !!!!!!!"
       unless @@first_wakeup
         @@stream_th.terminate
@@ -153,20 +166,20 @@ end
     elsif ( @@first_wakeup )
       
       @@stream_th.wakeup
-      @@term0_old = term0
+      @@keywords_old = keywords
       @@term1_old = term1
-      @@term0 = term0
+      @@keywords = keywords
       @@term1 = term1
 
       @@mutex.synchronize {return @@tweet_array}
 
 
     # case 2: different from last time
-    elsif ( term0 != @@term0_old or term1 != @@term1_old )
+    elsif ( keywords != @@keywords_old or term1 != @@term1_old )
       puts "<><><><><><><>><><><> NEW TERMS <><><><><><><><><><><><><"
-      @@term0_old = term0
+      @@keywords_old = keywords
       @@term1_old = term1
-      @@term0 = term0
+      @@keywords = keywords
       @@term1 = term1
 
       @@stream_th.terminate
