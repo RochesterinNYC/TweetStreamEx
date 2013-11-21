@@ -13,4 +13,8 @@ class StreamController < ApplicationController
     @tweets = @@stream.get_tweets params[:term0], params[:term1], "en"
     #@tweets = @@stream.get_tweets 'apple'    
   end
+
+  def test
+  
+  end
 end
