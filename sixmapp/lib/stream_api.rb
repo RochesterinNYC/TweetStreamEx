@@ -106,4 +106,12 @@ class TweetStreamAPI
     (term.nil? or term.blank?) ? true : false
   end
 
+  #Create JSON objects for front-end
+  def jsonify_tweet status
+    url = "https://twitter.com/#{status.user.handle}/statuses/#{status.id}"
+    date = DateTime.parse(time.to_s).strftime("%B %d %Y")
+    Hash[text: status.text, name: status.user.name, handle: status.user.handle, url: url, date: date]
+  end
+
+
 end
