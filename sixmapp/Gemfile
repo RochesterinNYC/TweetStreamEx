@@ -23,7 +23,7 @@ gem 'uglifier', '>= 1.3.0'					# Use Uglifier as compressor for JavaScript asset
 gem 'coffee-rails', '~> 4.0.0'			# Use CoffeeScript for .js.coffee assets and views
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
+gem 'therubyracer', platforms: :ruby
 
 gem 'jquery-rails'									# Use jquery as the JavaScript library
 gem 'turbolinks'										# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
@@ -34,13 +34,13 @@ gem 'jbuilder', '~> 1.2'
 gem 'mailcatcher'
 
 group :development, :test do
-	gem 'sqlite3'
-	gem 'rspec-rails'
-	gem 'shoulda-matchers'						# cleaner, simpler tests with great validation testing
-	gem 'guard-rspec'
-	gem 'spork-rails', '4.0.0'
-	gem 'guard-spork', '1.5.0'
-	gem 'childprocess', '0.3.6'
+  gem 'sqlite3'
+  gem 'rspec-rails'
+  gem 'shoulda-matchers'						# cleaner, simpler tests with great validation testing
+  gem 'guard-rspec'
+  gem 'spork-rails', '4.0.0'
+  gem 'guard-spork', '1.5.0'
+  gem 'childprocess', '0.3.6'
   gem 'pry-rails'
   gem 'pry-remote'
   gem 'pry-debugger'
@@ -55,13 +55,15 @@ group :test do
   gem 'annotate'
   gem 'factory_girl_rails', '4.2.0'
   gem 'database_cleaner'          # removed github address because of PEM auth issues
+  gem 'vcr'                       # record test suite http interactions for playback in future tests
+  gem 'webmock'                   # lib for stubbing and setting expectation on HTTP requests
   gem 'libnotify' if /linux/ =~ RUBY_PLATFORM
   gem 'growl' if /darwin/ =~ RUBY_PLATFORM
 end
 
 group :production do
-	#gem 'pg'												# Use postgresql as the database for Active Record
-	gem 'rails_12factor', '0.0.2'
+  #gem 'pg'												# Use postgresql as the database for Active Record
+  gem 'rails_12factor', '0.0.2'
 end
 
 group :doc do
