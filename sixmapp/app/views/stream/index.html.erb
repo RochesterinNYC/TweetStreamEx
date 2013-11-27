@@ -1,5 +1,16 @@
 <%= form_tag("/dashboard", :method => "get", class: "container text-center") do %> 
   <meta http-equiv="refresh" content="12" >
+
+  <!-- map -->
+  <div class="rightCol" id="map">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <%= javascript_include_tag "map.js" %>   
+  </div>
+
+
+  <!-- search -->
+  <div class="leftCol">
   <h2>Tweets About ...</h2>
   <div>
     <%= label_tag(:q, "keywords:") %>
@@ -23,21 +34,29 @@
     <%= text_field_tag(:longitude) %>
     <%= label_tag(:q, "radius:") %>
     <%= text_field_tag(:radius) %>
+  </div>
+  <div>
     <input type="radio" name="distance" value="mi" checked>mile
     <input type="radio" name="distance" value="km">km 
+
   </div>
+
   <br/>
   <div>
     <%= submit_tag("Search", class: 'btn btn-primary') %>
+    <p> Count: <%= @tweets.count %> </p>
+  </div>
   </div>
 
+  <div class="tweets">
+    <% @tweets.reverse.each do |tweet| %>
+
+    <p><%= tweet.from_user %> : <%= tweet.text.html_safe %> </p>
+    <p><%= tweet.created_at %> / <%= tweet.user.location %> </p>
+    <p>------------------------------------</p> 
+    <% end %>
+  </div>
 <% end %>
 
-<p> Count: <%= @tweets.count %> </p>
-<% @tweets.reverse.each do |tweet| %>
 
-  <p><%= tweet.from_user %> : <%= tweet.text.html_safe %> </p>
-  <p><%= tweet.created_at %> / <%= tweet.user.location %> </p>
-  <p>------------------------------------</p> 
-<% end %>
 <br />
