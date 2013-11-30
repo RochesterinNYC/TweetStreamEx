@@ -113,5 +113,6 @@ class TweetStreamAPI
     Hash[text: status.text, name: status.user.name, handle: status.user.handle, url: url, date: date]
   end
 
-
 end
+
+
