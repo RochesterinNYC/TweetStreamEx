@@ -43,6 +43,10 @@ class StreamController < ApplicationController
        @warning = "invalid language"
     end
 
+    if params[:distance] != "mi" and params[:distance] != "km"
+       @warning = "invalid distance units"
+    end
+
     #latitude goes from -90 to 90 and longitude from -180 to 180
     #checking decimal numbers in a range a regex is a pain, so we'll
     #let twitter deal with that. We won't check boundary conditions
