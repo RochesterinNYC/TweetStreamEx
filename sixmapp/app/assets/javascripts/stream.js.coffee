@@ -15,9 +15,14 @@ TweetStreamUI.refreshTweetArray = () ->
   if(TweetArray.length == 10)
     TweetArray.pop()
     TweetArray.pop()
-  #Add two tweets from storage to front of array
+    #Add two tweets from storage to front of array
   TweetArray.unshift(TweetStorage.shift())
   TweetArray.unshift(TweetStorage.shift())
+  #Initial TweetArray Fill
+  #else
+  #  for tweet, x in TweetStorage
+  #    TweetArray[x] = TweetStorage[x]
+  #  TweetStreamUI.getTweets()
 
 TweetStreamUI.renderTweets = () ->
   for tweet, x in TweetArray
@@ -37,7 +42,7 @@ TweetStreamUI.getTime = (time) ->
   return Math.ceil((new Date().getTime()/1000)) - time
 
 TweetStreamUI.getTweets = () ->
-  window.TweetArray = []
+  #window.TweetArray = []
   formData = {
     'keywords': $('#tweet_keywords').val(),
     'exclude': $('#tweet_exclude').val(),
@@ -59,5 +64,4 @@ TweetStreamUI.validateError = (data) ->
 TweetStreamUI.validateSuccess = (data) ->
   for tweet, x in data.tweets
     TweetStorage[x] = data.tweets[x]
-  total = $('#number-tweets').html()
-  $('#number-tweets').html(parseInt(total) + data.num_tweets)
+  $('#number-tweets').html(data.num_tweets)

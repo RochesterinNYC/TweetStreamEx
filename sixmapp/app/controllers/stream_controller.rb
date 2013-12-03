@@ -96,8 +96,6 @@ class StreamController < ApplicationController
     end
 
     @@first_time = false
-    #@warning = nil
-
     unless @warning
       @tweets = @@stream.get_tweets params[:keywords], params[:exclude],
 				    params[:language], params[:latitude], 
@@ -108,11 +106,9 @@ class StreamController < ApplicationController
       @tweets = Array.new
       @@session_array.push [@@graph_time,@tweets.size]
     end
-    #@query = params[:query] 
-    #@tweets = @@stream.get_tweets @query, '', nil, nil, nil, nil, nil 
     @tweet_jsons = Array.new(params[:numTweets].to_i)
     (0..(params[:numTweets].to_i - 1)).each do |i|
-      @tweet_jsons[i] = @@stream.jsonify_tweet(@tweets[i])
+      @tweet_jsons[i] = @@stream.jsonify_tweet(@tweets[@tweets.length - 1 - i])
     end
     render json: {tweets: @tweet_jsons, num_tweets: @tweets.size}
   end
