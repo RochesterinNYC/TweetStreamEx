@@ -1,0 +1,38 @@
+= form_tag("/stream", :method => "get", class: "container text-center") do
+  / map
+  #map.rightCol
+    %script{src: "http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js", type: "text/javascript"}
+    %script{src: "https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"}
+    = javascript_include_tag "map.js"
+  / search
+  .leftCol
+    %h2 Tweets About ...
+    %div
+      = label_tag(:q, "keywords:")
+      = text_field_tag(:keywords)
+    %div
+      = label_tag(:q, "exclude:")
+      = text_field_tag(:exclude)
+    %div
+      = label_tag(:q, "language:")
+      %select.form-control{name: "language"}
+        %option{value: "en"} English
+        %option{value: "es"} Spanish
+    %div
+      = label_tag(:q, "latitude:")
+      = text_field_tag(:latitude)
+      = label_tag(:q, "longitude:")
+      = text_field_tag(:longitude)
+      = label_tag(:q, "radius:")
+      = text_field_tag(:radius)
+    %div
+      %input{checked: "checked", name: "distance", type: "radio", value: "mi"}>/
+      mile
+      = succeed "km" do
+        %input{name: "distance", type: "radio", value: "km"}/
+    %br/
+    %div
+      = submit_tag("Search", class: 'btn btn-primary')
+    %div
+      = @warning
+%br/
