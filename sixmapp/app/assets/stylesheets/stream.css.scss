@@ -35,3 +35,24 @@
     display: block;
   }
 }
+div.leftCol {
+  width:20%;
+  float:left;
+}
+
+div.rightCol {
+  width:80%;
+  float:right;
+}
+
+div.tweets {
+  width:100%;
+  clear:both;
+}
+
+#map {
+  width:80%;
+  height:60%;
+
+}
+.gmnoprint img { max-width: none; }
