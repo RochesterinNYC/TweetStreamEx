@@ -40,12 +40,12 @@ TweetStreamUI.getTweets = () ->
   window.TweetArray = []
   formData = {
     'keywords': $('#tweet_keywords').val(),
-    'exclude': $('tweet_exclude').val(),
-    'language': $('tweet_language').val(),
-    'latitude': $('tweet_latitude').val(),
-    'longitude': $('tweet_longitude').val(),
-    'radius': $('tweet_radius').val(),
-    'distance': $('tweet_distance').val(),
+    'exclude': $('#tweet_exclude').val(),
+    'language': $('#tweet_language').val(),
+    'latitude': $('#tweet_latitude').val(),
+    'longitude': $('#tweet_longitude').val(),
+    'radius': $('#tweet_radius').val(),
+    'distance': $('#tweet_distance').val(),
     'numTweets': $('#tweet_numTweets').val()
   }
   url = document.location.protocol + "//" + document.location.host + "/search"

@@ -96,7 +96,7 @@ class StreamController < ApplicationController
     end
 
     @@first_time = false
-    @warning = nil
+    #@warning = nil
 
     unless @warning
       @tweets = @@stream.get_tweets params[:keywords], params[:exclude],
