@@ -101,11 +101,12 @@ class StreamController < ApplicationController
                                     params[:longitude], params[:radius], 
                                     params[:distance]
       @@session_array.push [@@graph_time,@tweets.size] 
-      puts @@session_array
     else
       @tweets = Array.new
       @@session_array.push [@@graph_time,@tweets.size]
     end
+
+    puts @@session_array
   end
 
   def test
