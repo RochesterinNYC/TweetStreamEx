@@ -1,6 +1,8 @@
 require 'stream_api'
 class StreamController < ApplicationController
   @@stream = ::TweetStreamAPI.new
+  @@session_array = ['Time', 'Num of Tweets']
+  @@start_time = Time.now
   # GET /stream/index
 
 
@@ -48,17 +50,20 @@ class StreamController < ApplicationController
     end
 
     #latitude goes from -90 to 90 and longitude from -180 to 180
-    #checking decimal numbers in a range a regex is a pain, so we'll
-    #let twitter deal with that. We won't check boundary conditions
-    #but we will make sure they only enter a digit with something
-    #reasonable before and after the decimal place. This is a security
-    #feature, not a gps validator
+    #we use a regex to make sure the input is a decimal number
+    #and then float comparision to make sure that decimal is in range
     unless /(^[-]?([\d]?[\d]?)(\.|$|\.$)[\d]{0,20}$|^$)/.match params[:latitude]
       @warning = "hmm... that latitude won't work"
+    end
+    if params[:latitude].to_f > 90 or params[:latitude].to_f < -90
+      @warning = "latitude is out of range"
     end
 
     unless /(^[-]?[\d]?[\d]?[\d]?(\.|$|\.$)[\d]{0,20}$|^$)/.match params[:longitude]
       @warning = "hmm... that longitude won't work"
+    end
+    if params[:longitude].to_f > 180 or params[:longitude].to_f < -180
+      @warning = "longitude is out of range"
     end
 
     #same thing with the distance, security feature, not useability
@@ -71,13 +76,19 @@ class StreamController < ApplicationController
     #  @warning = "that's not a valid distance"
     #end
 
+      @@session_array = ['Time', 'Num of Tweets']
+
+      @@start_time = Time.now unless @start_time
     unless @warning
       @tweets = @@stream.get_tweets params[:keywords], params[:exclude],
 				    params[:language], params[:latitude], 
                                     params[:longitude], params[:radius], 
                                     params[:distance]
+      @@session_array.push [Time.now.sec - @@start_time.sec, @tweets.size] 
+      puts @@session_array
     else
       @tweets = Array.new
+      @@session_array.push [Time.now.sec - @@start_time.sec, 0]
     end
   end
 
