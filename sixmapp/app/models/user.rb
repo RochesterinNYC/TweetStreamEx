@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   # after_create :deliver_confirmation_email
   # after_create :mark_old_broadcasts
 
+  #Create user type query and bang methods
   VALID_TYPES.each do |user_type|
     scope user_type.to_s.downcase, -> { where(user_type: user_type) }
     define_method("#{user_type.downcase}?".to_sym) { self.user_type.to_s.upcase == user_type.to_s.upcase }
@@ -53,6 +54,7 @@ class User < ActiveRecord::Base
   #   self.save
   # end
 
+  #Get new, unread broadcasts for user
   def get_new_broadcasts
     newBroadcasts = []
     BroadcastMessage.all.each do |broadcast|
@@ -63,6 +65,8 @@ class User < ActiveRecord::Base
     newBroadcasts
   end
 
+  #Mark old existing broadcast objects as read for new user
+  #Prevents user from getting all previous broadcasts on first login
   def mark_old_broadcasts
     BroadcastMessage.all.each do |broadcast|
       broadcast.users_viewed << self.id

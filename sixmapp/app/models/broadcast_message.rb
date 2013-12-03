@@ -4,6 +4,7 @@ class BroadcastMessage < ActiveRecord::Base
   serialize :users_viewed
   after_create :create_users_viewed
 
+  #Returns whether a specific user has viewed this message
   def user_has_viewed(user_id) 
     user_viewed = false
     if self.users_viewed.include? user_id
@@ -17,6 +18,7 @@ class BroadcastMessage < ActiveRecord::Base
     self.save!
   end
 
+  #Mark message as read for a user
   def message_read(id)
     self.users_viewed << id 
     self.save!

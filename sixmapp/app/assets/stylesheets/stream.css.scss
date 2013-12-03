@@ -1,3 +1,37 @@
 // Place all the styles related to the stream controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.tweet-stream{
+  a.tweet {
+    border: solid;
+    margin: 20px 10px 0 10px;
+    width: 550px;
+    max-height: 75px;
+    float:left;
+    &:hover {
+      color: red;
+      background-color: grey;
+    }
+    img {
+      display: block;
+      float: left;
+      width: 64px;
+      height: 64px;
+      padding: 5px 5px 5px 5px;
+    }
+    .tweet-info{
+    	padding-bottom: 5px;
+    }
+    .tweet-time{
+      font-size: 0.8em;
+      float: right;
+    }
+  }
+  .tweet-inactive{
+    display: none;
+  }
+  .tweet-active{
+    display: block;
+  }
+}

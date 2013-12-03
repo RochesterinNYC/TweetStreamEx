@@ -1,23 +1,15 @@
 
-- 10.times do |index|
-  %blockquote.twitter-tweet{lang: "en"}
-    %p{id: "tweet#{index}text"} 
-
-    \— 
-    %span{id: "tweet#{index}name"} 
-    %span{id: "tweet#{index}handle"}
-    %a{id: "tweet#{index}url", href: ""} 
-      %span{id: "tweet{index}date"}
-  %script{async: "", charset: "utf-8", src: "//platform.twitter.com/widgets.js"}
-
-:javascript
-  $(document).ready(function(){
-    function refreshStream(){
-      TweetStreamUI.refresh();
-    }
-    function pullTweets(){
-      TweetStreamUI.getTweets();
-    }
-    window.setInterval(refreshStream(),1000);
-    window.setInterval(pullTweets(),4900);
-  });
+.tweet-stream
+  - 10.times do |index|  
+    %a.tweet.tweet-inactive{lang: "en", href: "", target: "_blank", id: "tweet#{index}", style: "float:left;"}
+      %img{src: "", id: "tweet#{index}image"}
+      .tweet-info
+        %span.tweet-username{id: "tweet#{index}name"}
+        %span.tweet-handle{id: "tweet#{index}handle"}
+        %span.tweet-time{id: "tweet#{index}time"}
+      .tweet-text{id: "tweet#{index}text"}
+  :javascript
+    $(document).ready(function(){
+      //var refresh = window.setInterval(function(){TweetStreamUI.refresh();},5000);
+      //var get = window.setInterval(function(){TweetStreamUI.getTweets();},24000);
+    });

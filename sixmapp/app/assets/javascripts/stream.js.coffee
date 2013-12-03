@@ -12,8 +12,9 @@ TweetStreamUI.refresh = () ->
 
 TweetStreamUI.refreshTweetArray = () ->
   #Remove the two last tweets (oldest) of array
-  TweetArray.pop()
-  TweetArray.pop()
+  if(TweetArray.length == 10)
+    TweetArray.pop()
+    TweetArray.pop()
   #Add two tweets from storage to front of array
   TweetArray.unshift(TweetStorage.shift())
   TweetArray.unshift(TweetStorage.shift())
@@ -23,20 +24,27 @@ TweetStreamUI.renderTweets = () ->
     TweetStreamUI.renderTweet(x)
 
 TweetStreamUI.renderTweet = (index) ->
-  $('#tweet' + index + 'text').innerHTML = TweetArray[index]["text"]
-  $('#tweet' + index + 'name').innerHTML = TweetArray[index]["name"]
-  $('#tweet' + index + 'handle').innerHTML = TweetArray[index]["handle"]
-  $('#tweet' + index + 'url').attr("href", TweetArray[index]["url"])
-  $('#tweet' + index + 'date').innerHTML = TweetArray[index]["date"]
+  $('#tweet' + index + 'image').attr("src", TweetArray[index]["image"])
+  $('#tweet' + index + 'name').html(TweetArray[index]["name"])
+  $('#tweet' + index + 'handle').html("@" + TweetArray[index]["handle"])
+  $('#tweet' + index + 'text').html(TweetArray[index]["text"])
+  $('#tweet' + index + 'time').html(TweetStreamUI.getTime(TweetArray[index]["time"]) + " seconds ago")
+  $('#tweet' + index).attr("href", TweetArray[index]["url"])
+  if $('#tweet' + index).hasClass("tweet-inactive") and $('#tweet' + index + 'handle').text().length != 0
+    $('#tweet' + index).toggleClass("tweet-inactive tweet-active")
+
+TweetStreamUI.getTime = (time) ->
+  return Math.ceil((new Date().getTime()/1000)) - time
 
 TweetStreamUI.getTweets = () ->
+  TweetArray = []
   formData = {
     #'query': $('#query').val(),
     #'numTweets': $('#numTweets').val()
     'query': "cats",
     'numTweets': 10
   }
-  url = document.location.protocol + "//" + document.location.host + "/stream/search"
+  url = document.location.protocol + "//" + document.location.host + "/search"
   params = { url: url, data: formData, type: 'GET', timeout: 5000, error: TweetStreamUI.validateError, statusCode: { 401: TweetStreamUI.validateError, 406: TweetStreamUI.validateError, 200: TweetStreamUI.validateSuccess }}
   # params.dataType = 'jsonp' if JSONP # use JSONP for development
   $.ajax(params)
@@ -46,6 +54,5 @@ TweetStreamUI.validateError = (data) ->
   #TweetStreamUI.showError()
 
 TweetStreamUI.validateSuccess = (data) ->
-  for tweet, x in TweetArray
+  for tweet, x in data.tweets
     TweetStorage[x] = data.tweets[x]
-

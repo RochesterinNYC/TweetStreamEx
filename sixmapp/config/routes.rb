@@ -8,6 +8,7 @@ Sixmapp::Application.routes.draw do
   root :to => 'site#index'
 
   get "/test" => 'stream#test', :as => 'test'
+  get "/search" => 'stream#search', :as => 'search'
   get '/welcome', to: 'site#welcome', :as => 'welcome'
   get '/signup', to: 'users#new', :as => "signup"
   get '/users', to: 'users#index', :as => 'users'
