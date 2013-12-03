@@ -1,4 +1,9 @@
-
+#Tweet-Query
+  Tweet Query Keywords:
+  #{@keywords}
+Number of Tweets: 
+#number-tweets
+  0
 .tweet-stream
   %input{type: "hidden", id: "tweet_keywords", name: "keywords", value: "#{@keywords}"}
   %input{type: "hidden", id: "tweet_exclude", name: "exclude", value: "#{@exclude}"}
@@ -10,15 +15,17 @@
   %input{type: "hidden", id: "tweet_numTweets", name: "numTweets", value: 10}
 
   - 10.times do |index|  
-    %a.tweet.tweet-inactive{lang: "en", href: "", target: "_blank", id: "tweet#{index}", style: "float:left;"}
+    %a.tweet.tweet-inactive{lang: "en", href: "", target: "_blank", id: "tweet#{index}"}
       %img{src: "", id: "tweet#{index}image"}
       .tweet-info
         %span.tweet-username{id: "tweet#{index}name"}
         %span.tweet-handle{id: "tweet#{index}handle"}
         %span.tweet-time{id: "tweet#{index}time"}
       .tweet-text{id: "tweet#{index}text"}
+
   :javascript
     $(document).ready(function(){
+      TweetStreamUI.getTweets();
       var refresh = window.setInterval(function(){TweetStreamUI.refresh();},2000);
       var get = window.setInterval(function(){TweetStreamUI.getTweets();},9000);
     });

@@ -1,6 +1,7 @@
 .page-header.tweetstream-header.container
-  %h3.logo{style: "float:left;color:white;padding:10px;"}
-    TweetStream
+  %a{href: "/dashboard"}
+    %h3.logo{style: "float:left;color:white;padding:10px;"}
+      TweetStream
   .container.button-area
     - if current_user
       = link_to "Logout", logout_path, :method => 'delete', class: "btn header_button", id: 'logout'

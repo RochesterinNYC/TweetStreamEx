@@ -37,9 +37,9 @@ TweetStreamUI.getTime = (time) ->
   return Math.ceil((new Date().getTime()/1000)) - time
 
 TweetStreamUI.getTweets = () ->
-  TweetArray = []
+  window.TweetArray = []
   formData = {
-    'query': $('#tweet_keywords').val(),
+    'keywords': $('#tweet_keywords').val(),
     'exclude': $('tweet_exclude').val(),
     'language': $('tweet_language').val(),
     'latitude': $('tweet_latitude').val(),
@@ -54,9 +54,10 @@ TweetStreamUI.getTweets = () ->
   $.ajax(params)
 
 TweetStreamUI.validateError = (data) ->
-  alert("Error occurred.")
   #TweetStreamUI.showError()
 
 TweetStreamUI.validateSuccess = (data) ->
   for tweet, x in data.tweets
     TweetStorage[x] = data.tweets[x]
+  total = $('#number-tweets').html()
+  $('#number-tweets').html(parseInt(total) + data.num_tweets)
