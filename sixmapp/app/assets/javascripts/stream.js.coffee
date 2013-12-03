@@ -9,6 +9,7 @@ window.TweetStorage = []
 TweetStreamUI.refresh = () ->
   TweetStreamUI.refreshTweetArray()
   TweetStreamUI.renderTweets()
+  TweetStreamUI.renderBorders()
 
 TweetStreamUI.refreshTweetArray = () ->
   #Remove the two last tweets (oldest) of array
@@ -23,6 +24,25 @@ TweetStreamUI.refreshTweetArray = () ->
   #  for tweet, x in TweetStorage
   #    TweetArray[x] = TweetStorage[x]
   #  TweetStreamUI.getTweets()
+
+TweetStreamUI.renderBorders = () ->
+  if $('.border-active').length is 0
+    current1 = 0
+    current2 = 1
+  else
+    current1 = parseInt($('.border-active')[0].id.replace('tweet', '')) + 2
+    current2 = parseInt($('.border-active')[1].id.replace('tweet', '')) + 2
+    if current1 > 9 || current2 > 10
+      current1 = 0
+      current2 = 1
+  for el in $('.tweet')
+    el = $(el)
+    el.css({border: '2px solid black'})
+    el.removeClass('border-active')
+  $('#tweet' + current1).css({border: '2px solid #55ACEE'})
+  $('#tweet' + current1).addClass('border-active')
+  $('#tweet' + current2).css({border: '2px solid #55ACEE'})
+  $('#tweet' + current2).addClass('border-active')
 
 TweetStreamUI.renderTweets = () ->
   for tweet, x in TweetArray

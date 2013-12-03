@@ -1,10 +1,12 @@
-#Tweet-Query
-  Tweet Query Keywords:
-  #{@keywords}
-Number of Tweets: 
-#number-tweets
-  0
-.tweet-stream
+.container.text-center
+  #Tweet-Query.text-center
+    Tweet Stream for:
+    %h5
+      #{@keywords}
+  Number of Tweets: 
+  #number-tweets
+    0
+.tweet-stream.container.text-center
   %input{type: "hidden", id: "tweet_keywords", name: "keywords", value: "#{@keywords}"}
   %input{type: "hidden", id: "tweet_exclude", name: "exclude", value: "#{@exclude}"}
   %input{type: "hidden", id: "tweet_language", name: "language", value: "#{@language}"}
@@ -15,7 +17,7 @@ Number of Tweets:
   %input{type: "hidden", id: "tweet_numTweets", name: "numTweets", value: 10}
 
   - 10.times do |index|  
-    %a.tweet.tweet-inactive{lang: "en", href: "", target: "_blank", id: "tweet#{index}"}
+    %a.tweet.border-inactive.tweet-inactive{lang: "en", href: "", target: "_blank", id: "tweet#{index}"}
       %img{src: "", id: "tweet#{index}image"}
       .tweet-info
         %span.tweet-username{id: "tweet#{index}name"}

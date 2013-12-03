@@ -4,7 +4,9 @@
 
 .tweet-stream{
   a.tweet {
+    font-family: "Proxima Nova", Arial,sans-serif;
     border: solid;
+    border-radius: 5px;
     margin: 20px 10px 0 10px;
     width: 550px;
     max-height: 75px;
@@ -18,14 +20,21 @@
       float: left;
       width: 64px;
       height: 64px;
-      padding: 5px 5px 5px 5px;
+      padding: 5px 10px 5px 5px;
     }
     .tweet-info{
-    	padding-bottom: 5px;
-    }
-    .tweet-time{
-      font-size: 0.8em;
-      float: right;
+    	padding: 0 0 5px 0;
+    	.tweet-time{
+        font-size: 0.8em;
+        float: right;
+        padding-right: 5px;
+      }
+      .tweet-username{
+        color: #66757f;
+      }
+      .tweet-handle{
+        color: #292f44;
+      }
     }
   }
   .tweet-inactive{
