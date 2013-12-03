@@ -2,7 +2,9 @@ require 'stream_api'
 class StreamController < ApplicationController
   @@stream = ::TweetStreamAPI.new
   @@session_array = ['Time', 'Num of Tweets']
-  @@start_time = Time.now
+  @@start_time
+  @@graph_time
+  @@first_time = true
   # GET /stream/index
 
 
@@ -52,6 +54,8 @@ class StreamController < ApplicationController
     #latitude goes from -90 to 90 and longitude from -180 to 180
     #we use a regex to make sure the input is a decimal number
     #and then float comparision to make sure that decimal is in range
+    #trying to constrain a signed decimal number to a valid range with
+    #a regex would be really complicated
     unless /(^[-]?([\d]?[\d]?)(\.|$|\.$)[\d]{0,20}$|^$)/.match params[:latitude]
       @warning = "hmm... that latitude won't work"
     end
@@ -76,19 +80,31 @@ class StreamController < ApplicationController
     #  @warning = "that's not a valid distance"
     #end
 
-      @@session_array = ['Time', 'Num of Tweets']
+    puts "!!!!!!!!!!!!!!"
+    puts @@session_array
+    puts "!!!!!!!!!!!!!!"
+    #update startime
 
-      @@start_time = Time.now unless @start_time
+    if @@first_time
+       @@start_time = Time.now.to_f.to_i
+       @@graph_time = 0
+    else
+      @@graph_time = Time.now.to_f.to_i - @@start_time
+    end
+
+    @@first_time = false
+
+
     unless @warning
       @tweets = @@stream.get_tweets params[:keywords], params[:exclude],
 				    params[:language], params[:latitude], 
                                     params[:longitude], params[:radius], 
                                     params[:distance]
-      @@session_array.push [Time.now.sec - @@start_time.sec, @tweets.size] 
+      @@session_array.push [@@graph_time,@tweets.size] 
       puts @@session_array
     else
       @tweets = Array.new
-      @@session_array.push [Time.now.sec - @@start_time.sec, 0]
+      @@session_array.push [@@graph_time,@tweets.size]
     end
   end
 
