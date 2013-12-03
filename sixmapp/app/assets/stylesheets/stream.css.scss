@@ -2,6 +2,10 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+#number-tweets{
+	font-weight: bold;
+}
+
 .tweet-stream{
   a.tweet {
     font-family: "Proxima Nova", Arial,sans-serif;
@@ -12,8 +16,17 @@
     max-height: 75px;
     float:left;
     &:hover {
+      .tweet-info{
+        .tweet-username{
+          color: white;
+        }
+        .tweet-handle{
+        	color: white;
+        }
+      }
       color: white;
       background-color: #55ACEE;
+      text-decoration: none;
     }
     img {
       display: block;
@@ -23,7 +36,7 @@
       padding: 5px 10px 5px 5px;
     }
     .tweet-info{
-    	padding: 0 0 5px 0;
+    	padding: 7px 5px 5px 0;
     	.tweet-time{
         font-size: 0.8em;
         float: right;
