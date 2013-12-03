@@ -7,10 +7,13 @@ class StreamController < ApplicationController
   @@first_time = true
   # GET /stream/index
 
+  def index
+
+  end
 
   #nil parameters result if the parameters weren't
   #in the URL. Otherwise, it is a zero length string
-  def index
+  def search
     @warning
 
     #people can hardwire as many bogus params in the
@@ -106,9 +109,6 @@ class StreamController < ApplicationController
       @@session_array.push [@@graph_time,@tweets.size]
     end
 
-  end
-
-  def search
     @query = params[:query] 
     @num_tweets = params[:numTweets]
     @tweets = @@stream.get_tweets @query, '', nil, nil, nil, nil, nil 
@@ -120,6 +120,7 @@ class StreamController < ApplicationController
   end
 
   def test
+    @keywords, @exclude, @language, @latitude, @longitude, @radius, @distance = *params.values_at(:keywords, :exclude, :language, :latitude, :longitude, :radius, :distance)
+  end 
 
-  end
 end

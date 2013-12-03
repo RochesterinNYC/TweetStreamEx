@@ -1,5 +1,14 @@
 
 .tweet-stream
+  %input{type: "hidden", id: "tweet_keywords", name: "keywords", value: "#{@keywords}"}
+  %input{type: "hidden", id: "tweet_exclude", name: "exclude", value: "#{@exclude}"}
+  %input{type: "hidden", id: "tweet_language", name: "language", value: "#{@language}"}
+  %input{type: "hidden", id: "tweet_latitude", name: "latitude", value: "#{@latitude}"}
+  %input{type: "hidden", id: "tweet_longitude", name: "longitude", value: "#{@longitude}"}
+  %input{type: "hidden", id: "tweet_radius", name: "radius", value: "#{@radius}"}
+  %input{type: "hidden", id: "tweet_distance", name: "distance", value: "#{@distance}"}
+  %input{type: "hidden", id: "tweet_numTweets", name: "numTweets", value: 10}
+
   - 10.times do |index|  
     %a.tweet.tweet-inactive{lang: "en", href: "", target: "_blank", id: "tweet#{index}", style: "float:left;"}
       %img{src: "", id: "tweet#{index}image"}
@@ -10,6 +19,6 @@
       .tweet-text{id: "tweet#{index}text"}
   :javascript
     $(document).ready(function(){
-      //var refresh = window.setInterval(function(){TweetStreamUI.refresh();},5000);
-      //var get = window.setInterval(function(){TweetStreamUI.getTweets();},24000);
+      var refresh = window.setInterval(function(){TweetStreamUI.refresh();},2000);
+      var get = window.setInterval(function(){TweetStreamUI.getTweets();},9000);
     });

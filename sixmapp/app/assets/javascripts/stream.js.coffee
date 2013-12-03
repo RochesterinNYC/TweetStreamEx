@@ -39,10 +39,14 @@ TweetStreamUI.getTime = (time) ->
 TweetStreamUI.getTweets = () ->
   TweetArray = []
   formData = {
-    #'query': $('#query').val(),
-    #'numTweets': $('#numTweets').val()
-    'query': "cats",
-    'numTweets': 10
+    'query': $('#tweet_keywords').val(),
+    'exclude': $('tweet_exclude').val(),
+    'language': $('tweet_language').val(),
+    'latitude': $('tweet_latitude').val(),
+    'longitude': $('tweet_longitude').val(),
+    'radius': $('tweet_radius').val(),
+    'distance': $('tweet_distance').val(),
+    'numTweets': $('#tweet_numTweets').val()
   }
   url = document.location.protocol + "//" + document.location.host + "/search"
   params = { url: url, data: formData, type: 'GET', timeout: 5000, error: TweetStreamUI.validateError, statusCode: { 401: TweetStreamUI.validateError, 406: TweetStreamUI.validateError, 200: TweetStreamUI.validateSuccess }}
