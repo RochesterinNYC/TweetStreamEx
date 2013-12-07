@@ -35,7 +35,7 @@ class TweetStreamAPI
     #When any of the location parameters is blank
     #Search 10 most recent tweets using the Twitter API, first filtering by keywords
     if (nil_or_blank latitude or nil_or_blank longitude or nil_or_blank radius or nil_or_blank distance)
-      Twitter.search(keywords, :lang => language, :count => 10, :result_type => "recent").results.reverse.map do |status|
+      Twitter.search(keywords, :lang => language, :count => 100, :result_type => "recent").results.reverse.map do |status|
       #Push tweet objects if keywords match, if they are not already pushed, and if they don't include
       #excluded terms
         if ((verify_terms keywords, status) and not (already_exist status) and not (contains_excluded_terms excluded, status))
@@ -46,7 +46,7 @@ class TweetStreamAPI
     else
     #When location parameters are all present     
     #Search 10 most recent tweets using the Twitter API, first filtering by keywords, language and location
-      Twitter.search(keywords, :lang => language, :count => 10, :result_type => "recent",
+      Twitter.search(keywords, :lang => language, :count => 100, :result_type => "recent",
             :geocode => "#{latitude},#{longitude},#{radius}#{distance}").results.reverse.map do |status|
         if ((verify_terms keywords, status) and not (already_exist status) and not (contains_excluded_terms excluded, status))
            mark_terms keywords, status
