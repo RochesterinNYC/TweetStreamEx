@@ -5,6 +5,7 @@ class StreamController < ApplicationController
   @@start_time
   @@first_time = true
   @@warning = nil
+  @@old_tweets = Array.new
   # GET /stream/index
 
   def index
@@ -95,7 +96,20 @@ class StreamController < ApplicationController
       @tweets = @@stream.get_tweets params[:keywords], params[:exclude],
 				    params[:language], params[:latitude],
                                     params[:longitude], params[:radius],
-                                    params[:distance]
+				    params[:distance]
+      #check
+      unless @@old_tweets.size == 0
+       @tweets.each do |tweet|
+          @@old_tweets.each do |ot|
+            if tweet.id == ot.id
+              @tweets.delete tweet
+            end
+          end
+        end
+      end
+     #update old
+      @@old_tweets = @tweets
+
     else
       @tweets = Array.new
     end
