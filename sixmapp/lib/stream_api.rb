@@ -7,13 +7,14 @@ class TweetStreamAPI
   @@tweet_array = Array.new
   @@keywords = ""
   @@term1 = ""
+  @@since_id
 
   Twitter.configure do |config|
     config.consumer_key       = 'hIl8qNe1VqxKJuxHhWoA'
     config.consumer_secret    = 'iQxdv9Ak6T9fM8DtvdGAdGZGDqfvyiTiCXbPaXI0U8Y'
     config.oauth_token        = '1944743442-3pV23TQz68mT0GeyoINA6HDwRoe78UvWwLRLWuY'
     config.oauth_token_secret = 'w6hMGXVwNKCjL60jhEDXJs1nzhMP0r5Rmsxoa7wSRc'
-  end 
+  end
 
   #Search tweets matching keywords but excluding forbidden words
   #matching language and location
@@ -21,7 +22,7 @@ class TweetStreamAPI
 
     #Return an empty array if search terms are empty
     if (nil_or_blank keywords)
-      return Array.new 
+      return Array.new
     end
 
     #If search terms changed
@@ -29,11 +30,11 @@ class TweetStreamAPI
       @@keywords = keywords
 
       #reset array
-      @@tweet_array = Array.new 
+      @@tweet_array = Array.new
     end
 
     #When any of the location parameters is blank
-    #Search 10 most recent tweets using the Twitter API, first filtering by keywords
+    #Search 100 most recent tweets using the Twitter API, first filtering by keywords
     if (nil_or_blank latitude or nil_or_blank longitude or nil_or_blank radius or nil_or_blank distance)
       Twitter.search(keywords, :lang => language, :count => 100, :result_type => "recent").results.reverse.map do |status|
       #Push tweet objects if keywords match, if they are not already pushed, and if they don't include
@@ -44,8 +45,8 @@ class TweetStreamAPI
         end
       end
     else
-    #When location parameters are all present     
-    #Search 10 most recent tweets using the Twitter API, first filtering by keywords, language and location
+    #When location parameters are all present
+    #Search 100 most recent tweets using the Twitter API, first filtering by keywords, language and location
       Twitter.search(keywords, :lang => language, :count => 100, :result_type => "recent",
             :geocode => "#{latitude},#{longitude},#{radius}#{distance}").results.reverse.map do |status|
         if ((verify_terms keywords, status) and not (already_exist status) and not (contains_excluded_terms excluded, status))

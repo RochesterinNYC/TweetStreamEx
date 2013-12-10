@@ -7,6 +7,7 @@ Sixmapp::Application.routes.draw do
   get "/dashboard" => 'stream#index', :as => 'dashboard'
   root :to => 'site#index'
 
+  post '/validate' => 'stream#validate', :as => 'validate'
   get "/stream" => 'stream#stream', :as => 'stream'
   get "/search" => 'stream#search', :as => 'search'
   get '/welcome', to: 'site#welcome', :as => 'welcome'
